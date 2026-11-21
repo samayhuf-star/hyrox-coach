@@ -1,0 +1,11 @@
+{
+  "apps": [
+    {
+      "path": ".",
+      "framework": "swift",
+      "settings": {
+        "iosBundleId": "com.superapp.hyroxallinonecoachyzr40"
+      }
+    }
+  ]
+}
