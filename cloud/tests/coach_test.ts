@@ -131,6 +131,11 @@ await t('delete_account removes the auth user', async () => {
   const r = await post({ action: 'delete_account' }); eq((await r.json()).deleted, true);
   eq(called('coach_begin_delete').length, 1); eq(called('/auth/v1/admin/users/u1').length, 1);
 });
+await t('delete_account with shared sign-ins erases Coach data and keeps the sign-in', async () => {
+  Deno.env.set('COACH_KEEP_AUTH_USER', 'true');
+  const r = await post({ action: 'delete_account' }); Deno.env.delete('COACH_KEEP_AUTH_USER');
+  eq((await r.json()).deleted, true); eq(called('coach_erase').length, 1); eq(called('/auth/v1/admin/users/').length, 0);
+});
 await t('delete_conversation needs a valid id', async () => { eq((await (await post({ action: 'delete_conversation', conversation_id: 'abc' })).json()).code, 'invalid_request'); });
 await t('consent is stored', async () => { await post({ action: 'consent', accepted: true }); eq(called('coach_accounts')[0].method, 'PATCH'); });
 await t('email identity hash is case/space-insensitive', async () => {

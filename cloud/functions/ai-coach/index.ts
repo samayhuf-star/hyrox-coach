@@ -38,8 +38,9 @@ Deno.serve(async (req: Request) => {
   if (body.action === 'consent') await db(`coach_accounts?user_id=eq.${user.id}`, 'PATCH', { consent_at: body.accepted === true ? new Date().toISOString() : null });
   else if (body.action === 'delete_account') {
    await rpc('coach_begin_delete',{p_user:user.id});
-   try { await removeAuthUser(user.id); }
-   catch (error) { await db(`coach_accounts?user_id=eq.${user.id}`,'PATCH',{deleting:false}); throw error; }
+   // When this project's sign-ins are shared with another product, erase the Coach data but keep the sign-in.
+   try { if (Deno.env.get('COACH_KEEP_AUTH_USER') === 'true') await rpc('coach_erase',{p_user:user.id}); else await removeAuthUser(user.id); }
+   catch (error) { await db(`coach_accounts?user_id=eq.${user.id}`,'PATCH',{deleting:false}); throw new Error('delete_unavailable'); }
    return json({ deleted:true });
   } else if (body.action === 'delete_conversation') {
    if (!uuid(conversation)) throw new Error('invalid_request');
