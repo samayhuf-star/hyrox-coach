@@ -29,6 +29,13 @@ enum UnitSystem: String, Codable, CaseIterable, Identifiable, Sendable {
     func meters(_ value: Double) -> Double { self == .metric ? value : value * 0.9144 }
     func loadValue(_ kg: Double) -> Double { self == .metric ? kg : kg * 2.20462 }
     func kilograms(_ value: Double) -> Double { self == .metric ? value : value / 2.20462 }
+    /// Display-only rounding so converted targets read cleanly (435 yd, 9 lb) instead of 437.4 yd or 8.8 lb.
+    func displayDistance(_ meters: Double) -> Double {
+        guard self == .imperial else { return meters }
+        let yards = distanceValue(meters)
+        return yards >= 50 ? (yards / 5).rounded() * 5 : yards.rounded()
+    }
+    func displayLoad(_ kg: Double) -> Double { self == .metric ? kg : loadValue(kg).rounded() }
 }
 
 enum Equipment: String, Codable, CaseIterable, Identifiable, Sendable {
@@ -59,9 +66,10 @@ struct AthletePreferences: Codable, Equatable, Sendable {
 enum WorkoutFamily: String, Codable, CaseIterable, Identifiable, Sendable {
     case engine, introduction, strength, easy, custom
     case endurance, runCarry, lowerBody, bodyweight, rowCircuit, skiCircuit, stationMix, runLunge
+    case chain, raceRehearsal
     static var starters: [WorkoutFamily] {
         [.engine, .introduction, .strength, .easy, .endurance, .runCarry,
-         .lowerBody, .bodyweight, .rowCircuit, .skiCircuit, .stationMix, .runLunge]
+         .lowerBody, .bodyweight, .rowCircuit, .skiCircuit, .stationMix, .runLunge, .chain, .raceRehearsal]
     }
     var id: String { rawValue }
     var title: String {
@@ -79,6 +87,8 @@ enum WorkoutFamily: String, Codable, CaseIterable, Identifiable, Sendable {
         case .skiCircuit: "Ski & stride"
         case .stationMix: "Station sampler"
         case .runLunge: "Run & lunge"
+        case .chain: "Run–station chain"
+        case .raceRehearsal: "Race rehearsal"
         }
     }
     var category: String {
@@ -93,6 +103,8 @@ enum WorkoutFamily: String, Codable, CaseIterable, Identifiable, Sendable {
         case .bodyweight: "No equipment"
         case .rowCircuit: "Row + strength"
         case .skiCircuit: "Ski + run"
+        case .chain: "Race practice"
+        case .raceRehearsal: "Race practice"
         }
     }
     var purpose: String {
@@ -110,11 +122,14 @@ enum WorkoutFamily: String, Codable, CaseIterable, Identifiable, Sendable {
         case .skiCircuit: "Alternate SkiErg practice and an easy run. Keep both efforts steady and repeatable."
         case .stationMix: "Explore rowing, SkiErg, carries and wall balls with light targets and plenty of rest."
         case .runLunge: "Pair an easy run with controlled lunges. Keep your steps steady and rest between rounds."
+        case .chain: "Practise changing gear: run, work a station, run again. Hold a pace you could repeat."
+        case .raceRehearsal: "All eight stations in race order with a run before each, scaled to your level. Start easier than feels necessary."
         }
     }
     var symbol: String {
         switch self {
-        case .engine, .endurance, .runCarry, .runLunge: "figure.run"
+        case .engine, .endurance, .runCarry, .runLunge, .chain: "figure.run"
+        case .raceRehearsal: "flag.checkered"
         case .introduction, .bodyweight: "figure.walk"
         case .strength, .lowerBody, .stationMix: "dumbbell.fill"
         case .easy: "leaf.fill"
@@ -164,10 +179,10 @@ struct WorkoutStep: Codable, Equatable, Identifiable, Sendable {
         let value: String
         switch targetKind {
         case .time: value = TrainingFormat.duration(target)
-        case .distance: value = "\(TrainingFormat.number(units.distanceValue(target))) \(units.distanceUnit)"
+        case .distance: value = "\(TrainingFormat.number(units.displayDistance(target))) \(units.distanceUnit)"
         case .repetitions: value = "\(TrainingFormat.number(target)) reps"
         }
-        return loadKg > 0 ? "\(value) · \(TrainingFormat.number(units.loadValue(loadKg))) \(units.loadUnit)" : value
+        return loadKg > 0 ? "\(value) · \(TrainingFormat.number(units.displayLoad(loadKg))) \(units.loadUnit)" : value
     }
 }
 
@@ -265,6 +280,8 @@ struct ActiveSession: Codable, Equatable, Identifiable, Sendable {
     var actualTarget: Double?
     var actualLoadKg: Double?
     var summary: SessionRecord?
+    /// Set when the timer was stopped for the athlete after a long silence on a manual step.
+    var autoPaused: Bool?
     var steps: [ExpandedStep] { workout.expandedSteps }
     var current: ExpandedStep? { steps.indices.contains(cursor) ? steps[cursor] : nil }
     var isPaused: Bool { runningSince == nil }
@@ -300,7 +317,8 @@ enum TrainingFormat {
     }
     static func duration(_ seconds: Double) -> String {
         let value = max(0, Int(seconds.rounded()))
-        return value % 60 == 0 && value >= 60 ? "\(value / 60) min" : "\(value) sec"
+        if value < 60 { return "\(value) sec" }
+        return value % 60 == 0 ? "\(value / 60) min" : "\(value / 60) min \(value % 60) sec"
     }
     static func number(_ value: Double) -> String {
         value.formatted(.number.precision(.fractionLength(0...1)))

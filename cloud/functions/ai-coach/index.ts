@@ -26,7 +26,9 @@ Deno.serve(async (req: Request) => {
   userID = user.id;
   const raw = await req.text();
   if (raw.length>16000) throw new Error('invalid_request');
-  const body = JSON.parse(raw);
+  let body;
+  try { body = JSON.parse(raw); } catch { throw new Error('invalid_request'); }
+  if (body === null || typeof body !== 'object' || Array.isArray(body)) throw new Error('invalid_request');
   const hash = await identity(user.email);
   await rpc('coach_reconcile',{p_user:user.id});
   await rpc('coach_wallet',{p_user:user.id,p_identity:hash});
@@ -70,6 +72,6 @@ Deno.serve(async (req: Request) => {
    try { await rpc('coach_settle',{p_user:userID,p_id:requestID,p_answer:null}); } catch { /* Expired reservations reconcile under the same account lock. */ }
   }
   const code=error instanceof Error ? error.message : '';
-  return json({error:messages[code] ?? 'Coach is temporarily unavailable. Refresh to recover any reply already saved. You will not be charged twice.',code:messages[code]?code:'unavailable'},code==='sign_in_required'?401:code==='no_credits'?402:code==='rate_limit'?429:503);
+  return json({error:messages[code] ?? 'Coach is temporarily unavailable. Refresh to recover any reply already saved. You will not be charged twice.',code:messages[code]?code:'unavailable'},code==='sign_in_required'?401:code==='no_credits'?402:code==='rate_limit'?429:['invalid_request','request_conflict','request_deleted','consent_required','verified_email_required'].includes(code)?400:503);
  }
 });

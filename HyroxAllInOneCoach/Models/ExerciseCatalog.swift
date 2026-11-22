@@ -49,6 +49,12 @@ enum ExerciseCatalog {
         Exercise(id: "sled", title: "Sled push", symbol: "figure.strengthtraining.functional", equipment: .sled,
                  cues: "Keep your back neutral, brace gently and push with short, steady steps. Use a light sled and a clear track. Ask a coach if this is new.",
                  defaultKind: .distance, defaultTarget: 25, secondsPerUnit: 3),
+        Exercise(id: "sledpull", title: "Sled pull", symbol: "figure.strengthtraining.functional", equipment: .sled,
+                 cues: "Face the sled, sit your hips back and pull the rope hand over hand with a neutral back. Keep the rope clear of your feet. Use a light sled and ask a coach if this is new.",
+                 defaultKind: .distance, defaultTarget: 25, secondsPerUnit: 3.5),
+        Exercise(id: "burpee", title: "Burpee broad jump", symbol: "figure.jumprope", equipment: nil,
+                 cues: "Hands down, chest to the floor, stand up, then jump forward with both feet and land softly. Step back and step up instead of jumping if you prefer. Small, steady jumps beat big ones.",
+                 defaultKind: .distance, defaultTarget: 20, secondsPerUnit: 4.5),
         Exercise(id: "rest", title: "Rest & breathe", symbol: "pause.circle", equipment: nil,
                  cues: "Let your breathing settle. Walk slowly or stand comfortably. Pause the timer if you need a little more rest.",
                  defaultKind: .time, defaultTarget: 60, secondsPerUnit: 1),
@@ -74,7 +80,7 @@ enum WorkoutFactory {
         let available = preferences.equipment
         let run = available.contains(.runningSpace)
             ? ExerciseCatalog.step("run", target: (400 * factor).rounded())
-            : ExerciseCatalog.step("march", target: 180 * factor, substitution: "Easy run")
+            : ExerciseCatalog.step("march", target: tidy(180 * factor), substitution: "Easy run")
         let squat = available.contains(.kettlebell)
             ? ExerciseCatalog.step("goblet", target: reps, load: load)
             : ExerciseCatalog.step("squat", target: reps, substitution: "Goblet squat")
@@ -87,10 +93,10 @@ enum WorkoutFactory {
             : ExerciseCatalog.step("lunge", target: reps, substitution: "Sandbag lunge")
         let row = available.contains(.rower)
             ? ExerciseCatalog.step("row", target: 300 * factor)
-            : ExerciseCatalog.step("march", target: 120 * factor, substitution: "Row")
+            : ExerciseCatalog.step("march", target: tidy(120 * factor), substitution: "Row")
         let ski = available.contains(.skiErg)
             ? ExerciseCatalog.step("ski", target: 250 * factor)
-            : ExerciseCatalog.step("walk", target: 120 * factor, substitution: "SkiErg")
+            : ExerciseCatalog.step("walk", target: tidy(120 * factor), substitution: "SkiErg")
         let wallball = available.contains(.wallBall)
             ? ExerciseCatalog.step("wallball", target: reps, load: 3)
             : ExerciseCatalog.step("squat", target: reps, substitution: "Wall ball")
@@ -117,7 +123,7 @@ enum WorkoutFactory {
         case .lowerBody:
             main = [squat, lunge, rest]
         case .bodyweight:
-            main = [ExerciseCatalog.step("march", target: 90 * factor),
+            main = [ExerciseCatalog.step("march", target: tidy(90 * factor)),
                     ExerciseCatalog.step("squat", target: reps),
                     ExerciseCatalog.step("walk", target: 90),
                     ExerciseCatalog.step("lunge", target: reps), rest]
@@ -129,6 +135,20 @@ enum WorkoutFactory {
             main = [row, ski, carry, wallball, rest]
         case .runLunge:
             main = [run, lunge, rest]
+        case .raceRehearsal:
+            return raceRehearsal(preferences: preferences, load: load)
+        case .chain:
+            // Run → station → run → station: practising the change of gear is the point.
+            let first = available.contains(.sled)
+                ? ExerciseCatalog.step("sled", target: 25, load: load)
+                : ExerciseCatalog.step("burpee", target: (20 * factor / 5).rounded() * 5)
+            let second = available.contains(.wallBall)
+                ? ExerciseCatalog.step("wallball", target: reps, load: 3)
+                : lunge
+            main = [run, first, fresh(run), second, rest]
+            // In a short session one full chain would overrun, so keep a single run-and-station pair.
+            let chainSeconds = main.reduce(0) { $0 + $1.estimatedSeconds }
+            if chainSeconds > (Double(preferences.timeBudget) * 60 - 300) * 1.2 { main = [run, first, rest] }
         case .custom:
             main = [ExerciseCatalog.step("squat", target: reps), rest]
         case .easy:
@@ -137,10 +157,62 @@ enum WorkoutFactory {
         }
         let warmup = [ExerciseCatalog.step("walk", target: 180)]
         let cooldown = [ExerciseCatalog.step("cooldown", target: 120)]
+        let availableSeconds = Double(preferences.timeBudget) * 60 - 300
+        // A very short circuit would need more than 8 rounds to fill a long session: lengthen the circuit instead.
+        let singleRound = main.reduce(0) { $0 + $1.estimatedSeconds }
+        let copies = min(3, max(1, Int((availableSeconds / singleRound / 8).rounded(.up))))
+        if copies > 1 { main = (0..<copies).flatMap { index in index == 0 ? main : main.map(fresh) } }
         let roundDuration = main.reduce(0) { $0 + $1.estimatedSeconds }
-        let rounds = max(1, min(8, Int(((Double(preferences.timeBudget) * 60 - 300) / roundDuration).rounded())))
+        let rounds = max(1, min(8, Int((availableSeconds / roundDuration).rounded())))
         return WorkoutDefinition(id: family.rawValue, family: family, title: family.title, purpose: family.purpose,
                                  level: level, timeBudget: preferences.timeBudget, rounds: rounds,
                                  warmup: warmup, main: main, cooldown: cooldown)
+    }
+    /// Rounds a timed target to the nearest 30 seconds so it reads as "4 min", not "234 sec".
+    static func tidy(_ seconds: Double) -> Double { max(30, (seconds / 30).rounded() * 30) }
+    /// Same step with its own identity, for circuits that repeat a movement.
+    static func fresh(_ step: WorkoutStep) -> WorkoutStep { var copy = step; copy.id = UUID().uuidString; return copy }
+
+    /// All eight stations in race order with a run before each. Distances are a share of the full
+    /// course by level (half, three-quarters, full); loads stay at the athlete's own training level.
+    static func raceRehearsal(preferences: AthletePreferences, load: Double) -> WorkoutDefinition {
+        let level = preferences.level
+        let share = level == .beginner ? 0.5 : (level == .regular ? 0.75 : 1.0)
+        let kit = preferences.equipment
+        func metres(_ full: Double, step: Double) -> Double { max(step, (full * share / step).rounded() * step) }
+        func distance(_ id: String, _ full: Double, by step: Double, load: Double = 0) -> WorkoutStep {
+            let exercise = ExerciseCatalog.find(id)
+            let target = metres(full, step: step)
+            let perUnit = exercise.defaultKind == .distance ? exercise.secondsPerUnit : 1.5
+            return WorkoutStep(exerciseID: id, targetKind: .distance, target: target, loadKg: load,
+                               estimatedSeconds: target * perUnit)
+        }
+        func timed(_ id: String, _ seconds: Double, instead: String) -> WorkoutStep {
+            ExerciseCatalog.step(id, target: tidy(seconds * share), substitution: instead)
+        }
+        func run() -> WorkoutStep {
+            kit.contains(.runningSpace) ? distance("run", 1000, by: 50) : timed("march", 420, instead: "1 km run")
+        }
+        let stations: [WorkoutStep] = [
+            kit.contains(.skiErg) ? distance("ski", 1000, by: 50) : timed("walk", 300, instead: "SkiErg"),
+            kit.contains(.sled) ? distance("sled", 50, by: 12.5, load: load) : timed("march", 120, instead: "Sled push"),
+            kit.contains(.sled) ? distance("sledpull", 50, by: 12.5, load: load) : timed("march", 120, instead: "Sled pull"),
+            distance("burpee", 80, by: 5),
+            kit.contains(.rower) ? distance("row", 1000, by: 50) : timed("march", 300, instead: "Row"),
+            kit.contains(.kettlebell) ? distance("carry", 200, by: 10, load: load) : timed("march", 150, instead: "Farmer’s carry"),
+            kit.contains(.sandbag) ? distance("sandbag", 100, by: 5, load: load) : distance("lunge", 100, by: 5),
+            kit.contains(.wallBall)
+                ? ExerciseCatalog.step("wallball", target: (100 * share).rounded(), load: 3)
+                : ExerciseCatalog.step("squat", target: (100 * share).rounded(), substitution: "Wall ball")
+        ]
+        let main = stations.flatMap { [run(), $0] }
+        let family = WorkoutFamily.raceRehearsal
+        let draft = WorkoutDefinition(id: family.rawValue, family: family, title: family.title, purpose: family.purpose,
+                                      level: level, timeBudget: preferences.timeBudget, rounds: 1,
+                                      warmup: [ExerciseCatalog.step("walk", target: 180)], main: main,
+                                      cooldown: [ExerciseCatalog.step("cooldown", target: 120)])
+        var workout = draft
+        workout.timeBudget = draft.estimatedMinutes   // a rehearsal takes as long as it takes
+        return workout
     }
 }

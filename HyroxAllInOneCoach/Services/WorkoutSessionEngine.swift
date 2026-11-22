@@ -33,14 +33,30 @@ final class WorkoutSessionEngine {
                 break
             }
         }
+        if let current = session.current, session.summary == nil, current.step.targetKind != .time,
+           let since = session.runningSince {
+            // A reps/distance step never ends on its own. If nothing has happened for far longer than it
+            // should take (phone pocketed, app closed), stop the clock there instead of logging hours.
+            let limit = Self.idleLimit(for: current.step)
+            if session.stepElapsed(at: now) > limit {
+                session.settle(at: since.addingTimeInterval(max(0, limit - session.stepAccumulatedSeconds)))
+                session.runningSince = nil
+                session.autoPaused = true
+                _ = repository.updateActive(session)
+                return
+            }
+        }
         if changed, repository.updateActive(session), notify { transitionFeedback() }
     }
+    /// Longest a manual step may run unattended: three times its estimate, and never under 10 minutes.
+    static func idleLimit(for step: WorkoutStep) -> Double { max(600, step.estimatedSeconds * 3) }
     func togglePause() {
         tick()
         guard var session = active, session.summary == nil else { return }
         let now = Date()
         if session.runningSince == nil { session.runningSince = now }
         else { session.settle(at: now); session.runningSince = nil }
+        session.autoPaused = nil
         repository.updateActive(session)
     }
     func advance(skipped: Bool = false) {
@@ -106,6 +122,7 @@ final class WorkoutSessionEngine {
         session.results.append(result)
     }
     private func resetStep(_ session: inout ActiveSession) {
+        session.autoPaused = nil
         session.stepAccumulatedSeconds = 0
         session.actualTarget = nil
         session.actualLoadKg = nil
