@@ -44,7 +44,18 @@ jobs:
           xcodebuild build \
             -project "$PROJECT" -scheme "$SCHEME" -configuration Release \
             -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' \
-            CODE_SIGNING_ALLOWED=NO | tail -n 200
+            CODE_SIGNING_ALLOWED=NO > "$RUNNER_TEMP/build.log" 2>&1 || {
+              tail -n 80 "$RUNNER_TEMP/build.log"
+              # Surface compiler errors as annotations so they show on the pull request.
+              grep -E "error:" "$RUNNER_TEMP/build.log" | sort -u | head -n 40 | while IFS= read -r line; do
+                file=$(printf '%s' "$line" | sed -nE "s#^$GITHUB_WORKSPACE/([^:]+):([0-9]+):[0-9]+: error: .*#\\1#p")
+                num=$(printf '%s' "$line" | sed -nE "s#^[^:]+:([0-9]+):[0-9]+: error: .*#\\1#p")
+                msg=$(printf '%s' "$line" | sed -E "s#^.*error: ##")
+                if [ -n "$file" ]; then echo "::error file=$file,line=$num::$msg"; else echo "::error::$line"; fi
+              done
+              exit 1
+            }
+          tail -n 20 "$RUNNER_TEMP/build.log"
 
   testflight:
     needs: compile
