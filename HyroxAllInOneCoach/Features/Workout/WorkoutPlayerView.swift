@@ -10,31 +10,35 @@ struct WorkoutPlayerView: View {
     @State private var showingActuals = false
     @State private var guide: Exercise?
 
-    var body: some View {
-        Group {
-            if let record = engine.active?.summary {
-                WorkoutSummaryView(repository: repository, engine: engine, record: record, isNew: true)
-                    .id(record.id)
-            } else {
-                NavigationStack {
-                    if let session = engine.active, let current = session.current {
-                        player(session: session, current: current).trainingScreen()
-                    } else {
-                        ContentUnavailableView("You’re all set", systemImage: "checkmark.circle")
-                            .onAppear { dismiss() }
-                            .trainingScreen()
-                    }
+    /// True while a workout is running (no summary yet), which is when the screen should stay awake.
+    private var isTraining: Bool { engine.active?.summary == nil }
+    private func keepAwake(_ on: Bool) { UIApplication.shared.isIdleTimerDisabled = on }
+
+    @ViewBuilder private var content: some View {
+        if let record = engine.active?.summary {
+            WorkoutSummaryView(repository: repository, engine: engine, record: record, isNew: true)
+                .id(record.id)
+        } else {
+            NavigationStack {
+                if let session = engine.active, let current = session.current {
+                    player(session: session, current: current).trainingScreen()
+                } else {
+                    ContentUnavailableView("You’re all set", systemImage: "checkmark.circle")
+                        .onAppear { dismiss() }
+                        .trainingScreen()
                 }
             }
         }
-        .interactiveDismissDisabled()
-        .sheet(item: $guide) { ExerciseGuideView(exercise: $0, sessionPaused: true) }
-        .onAppear { UIApplication.shared.isIdleTimerDisabled = engine.active?.summary == nil }
-        .onDisappear { UIApplication.shared.isIdleTimerDisabled = false }
-        .onChange(of: engine.active?.summary?.id) { _, id in UIApplication.shared.isIdleTimerDisabled = id == nil }
-        .onChange(of: scenePhase) { _, phase in
-            UIApplication.shared.isIdleTimerDisabled = phase == .active && engine.active?.summary == nil
-        }
+    }
+
+    var body: some View {
+        content
+            .interactiveDismissDisabled()
+            .sheet(item: $guide) { exercise in ExerciseGuideView(exercise: exercise, sessionPaused: true) }
+            .onAppear { keepAwake(isTraining) }
+            .onDisappear { keepAwake(false) }
+            .onChange(of: isTraining) { _, training in keepAwake(training) }
+            .onChange(of: scenePhase) { _, phase in keepAwake(phase == .active && isTraining) }
     }
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     private func player(session: ActiveSession, current: ExpandedStep) -> some View {

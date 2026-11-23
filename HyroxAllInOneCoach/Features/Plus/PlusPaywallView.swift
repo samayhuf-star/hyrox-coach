@@ -69,23 +69,58 @@ struct PlusPaywallView: View {
     }
     @ViewBuilder private var plans: some View {
         VStack(alignment: .leading, spacing: 12) {
-            SectionHeading(title: "Choose your rhythm", subtitle: "Both plans include every Plus feature.")
+            SectionHeading(title: "Choose your rhythm", subtitle: "Every plan includes every Plus feature.")
             if store.isLoading && store.packages.isEmpty {
                 HStack { ProgressView(); Text("Loading available plans…").font(.body) }.frame(minHeight: 60)
             } else if store.packages.isEmpty {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Monthly or annual. Your choice.").font(.headline)
+                    Text("A plan for every rhythm.").font(.headline)
                     Text("Pricing isn’t available yet. Nothing will be charged here.").font(.subheadline).foregroundStyle(TrainingTheme.secondary)
                 }.trainingPanel()
             } else {
-                if let annual = store.annual { planRow(annual, title: "Annual", period: "year", detail: "12 months of Hybrid Plus") }
-                if let monthly = store.monthly { planRow(monthly, title: "Monthly", period: "month", detail: "One month at a time") }
+                ForEach(store.orderedPackages, id: \.identifier) { package in planRow(package) }
             }
             if let message = store.message { Text(message).font(.subheadline).foregroundStyle(TrainingTheme.secondary) }
         }
     }
-    private func planRow(_ package: Package, title: String, period: String, detail: String) -> some View {
+    private func planTitle(_ package: Package) -> String {
+        switch package.packageType {
+        case .annual: return "Annual"
+        case .weekly: return "Weekly"
+        case .lifetime: return "Lifetime"
+        default: return "Monthly"
+        }
+    }
+    private func planPeriod(_ package: Package) -> String? {
+        switch package.packageType {
+        case .annual: return "year"
+        case .weekly: return "week"
+        case .lifetime: return nil
+        default: return "month"
+        }
+    }
+    private func planDetail(_ package: Package) -> String {
+        switch package.packageType {
+        case .annual: return "12 months of Hybrid Plus · Renews automatically"
+        case .weekly: return "One week at a time · Renews automatically"
+        case .lifetime: return "Pay once. Keep Hybrid Plus. No renewal"
+        default: return "One month at a time · Renews automatically"
+        }
+    }
+    private func billingLine(_ package: Package) -> String {
+        let price = package.storeProduct.localizedPriceString
+        guard let period = planPeriod(package) else { return "\(price) charged once. Not a subscription; nothing to cancel." }
+        if let trial = store.trialLength(for: package) {
+            return "Free for \(trial), then \(price) every \(period). Auto-renews; cancel in Apple subscription settings at least 24 hours before the trial ends to avoid being charged."
+        }
+        return "\(price) billed every \(period). Auto-renews; cancel in Apple subscription settings."
+    }
+    private func planRow(_ package: Package) -> some View {
         let chosen = selectedID == package.identifier
+        let title = planTitle(package)
+        let price = package.storeProduct.localizedPriceString
+        let priceLine = planPeriod(package).map { "\(price) / \($0)" } ?? "\(price) once"
+        let trial = store.trialLength(for: package)
         return Button {
             withAnimation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.85)) { selectedID = package.identifier }
         } label: {
@@ -97,12 +132,16 @@ struct PlusPaywallView: View {
                     Image(systemName: chosen ? "checkmark.circle.fill" : "circle")
                         .font(.title2).foregroundStyle(TrainingTheme.accent).accessibilityHidden(true)
                 }
-                Text("\(package.storeProduct.localizedPriceString) / \(period)").font(.title2.weight(.bold))
+                Text(priceLine).font(.title2.weight(.bold))
+                if let trial {
+                    Text("\(trial) free, then \(priceLine)")
+                        .font(.subheadline.weight(.medium)).foregroundStyle(TrainingTheme.accent)
+                }
                 if let equivalent = store.monthlyEquivalent(for: package) {
                     Text("Approx. \(equivalent)/month · Billed annually")
                         .font(.subheadline.weight(.medium)).foregroundStyle(TrainingTheme.accent)
                 }
-                Text("\(detail) · Renews automatically").font(.subheadline).foregroundStyle(TrainingTheme.secondary)
+                Text(planDetail(package)).font(.subheadline).foregroundStyle(TrainingTheme.secondary)
                 if let savings = store.savings(for: package), savings > 0 {
                     Text("About \(savings)% less than 12 monthly payments.")
                         .font(.footnote).foregroundStyle(TrainingTheme.secondary)
@@ -118,7 +157,8 @@ struct PlusPaywallView: View {
     private var membership: some View {
         VStack(alignment: .leading, spacing: 14) {
             Label("Hybrid Plus is active", systemImage: "checkmark.seal.fill").font(.title3.weight(.semibold))
-            Text("Your builder and progress insights are unlocked. Thank you for supporting Hybrid Training.").font(.body)
+            Text("Your builder and progress insights are unlocked. Thank you for supporting Hybrid Trainer.").font(.body)
+            if store.expiration == nil { Text("Lifetime access. Nothing renews.").font(.subheadline).foregroundStyle(TrainingTheme.secondary) }
             if let date = store.expiration {
                 Text("\(store.willRenew ? "Renews" : "Access until") \(date.formatted(date: .abbreviated, time: .omitted))").font(.subheadline).foregroundStyle(TrainingTheme.secondary)
             }
@@ -136,9 +176,9 @@ struct PlusPaywallView: View {
             } else if let selected {
                 Button {
                     Task { await store.purchase(selected) }
-                } label: { Label(PlusPurchaseStore.isTestStore ? "Test Hybrid Plus purchase" : "Get Hybrid Plus", systemImage: "sparkles") }
+                } label: { Label(PlusPurchaseStore.isTestStore ? "Test Hybrid Plus purchase" : (store.trialLength(for: selected) != nil ? "Start free trial" : "Get Hybrid Plus"), systemImage: "sparkles") }
                     .buttonStyle(TrainingButtonStyle())
-                Text("\(selected.storeProduct.localizedPriceString) billed \(selected.packageType == .annual ? "annually" : "monthly"). Auto-renews; cancel in Apple subscription settings.")
+                Text(billingLine(selected))
                     .font(.caption).foregroundStyle(TrainingTheme.secondary).multilineTextAlignment(.center)
             } else {
                 Button("Try loading plans again") { Task { await store.loadPlans() } }.buttonStyle(TrainingButtonStyle())
@@ -149,7 +189,7 @@ struct PlusPaywallView: View {
     }
     private var policies: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("No trial. No pressure. Subscriptions renew automatically unless canceled at least 24 hours before the current period ends. Payment is charged at confirmation. Manage or cancel in your Apple account settings.")
+            Text((store.hasTrialOffer ? "A free trial becomes a paid subscription unless canceled at least 24 hours before the trial ends. " : "") + "Subscriptions renew automatically unless canceled at least 24 hours before the current period ends. Payment is charged at confirmation, or when a free trial ends. Lifetime is a one-time purchase. Manage or cancel in your Apple account settings.")
                 .font(.footnote).foregroundStyle(TrainingTheme.secondary)
             Text("Your saved workouts and history remain yours if you cancel. Creating or editing custom templates and viewing Plus insights require active Plus access.")
                 .font(.footnote).foregroundStyle(TrainingTheme.secondary)
@@ -169,6 +209,6 @@ struct PlusPaywallView: View {
         Button("Privacy") { showingPrivacy = true }.frame(minHeight: 44)
     }
     private func chooseAvailablePlan() {
-        if selected == nil { selectedID = store.annual?.identifier ?? store.monthly?.identifier ?? "$rc_annual" }
+        if selected == nil { selectedID = store.orderedPackages.first?.identifier ?? "$rc_annual" }
     }
 }
