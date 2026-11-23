@@ -10,6 +10,11 @@
     "ios": {
       "bundleIdentifier": "com.superapp.hyroxallinonecoachyzr40",
       "buildNumber": "20"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "4ef62d79-cb2b-4dfc-9002-d6196893bad8"
+      }
     }
   }
 }
