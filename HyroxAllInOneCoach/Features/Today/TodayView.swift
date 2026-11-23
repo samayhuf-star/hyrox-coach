@@ -10,36 +10,16 @@ struct TodayView: View {
     @State private var showingWorkout = false
     @State private var sessionsBeforePlayer: [SessionRecord] = []
     @State private var confirmStartFresh = false
+    @State private var tab: TrainingTab = .today
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 26) {
-                    header
-                    storageNotice
-                    if let workout = repository.selectedWorkout {
-                        TodayWorkoutCard(workout: workout, active: engine.active, units: repository.preferences.units,
-                                         adjust: { sheet = .adjust(workout) },
-                                         change: { sheet = .choose }, shuffle: { _ = repository.shuffleWorkout() })
-                            .trainingReveal(delay: 0.04)
-                        ExerciseGuidesTodayCard(workout: workout) { sheet = .demos }
-                        TrainingQuickActions(library: { sheet = .choose }, history: { sheet = .history })
-                            .trainingReveal(delay: 0.1)
-                        CoachTodayCard { sheet = .coach }.trainingReveal(delay: 0.12)
-                        if repository.state.journey?.rewardsEnabled != false {
-                            JourneyProgressCard(rewards: TrainingRewards(sessions: repository.sessions),
-                                                journey: repository.state.journey ?? TrainingJourney()) { sheet = .rewards }
-                                .trainingReveal(delay: 0.1)
-                        }
-                        WeeklyProgressCard(days: repository.weekDays()).trainingReveal(delay: 0.15)
-                        WorkoutOutlineView(workout: workout, units: repository.preferences.units)
-                        PlusToolsCard(isPlus: plus.isPlus) { sheet = .feature($0) }
-                        recentSessions
-                        footer
+                    if tab == .plan {
+                        TrainingPlanView(repository: repository) { sheet = .choose }
                     } else {
-                        ContentUnavailableView("Your workouts are safe", systemImage: "externaldrive.badge.exclamationmark",
-                                               description: Text("We couldn’t open your local training data. Try again below."))
-                        Button("Try again", action: repository.reload).buttonStyle(TrainingButtonStyle())
+                        todayContent
                     }
                 }
                 .padding(.horizontal, 20)
@@ -50,9 +30,12 @@ struct TodayView: View {
             }
             .background { TrainingBackdrop() }
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                if let workout = repository.selectedWorkout {
-                    TodayNextAction(workout: workout, active: engine.active,
-                                    units: repository.preferences.units, action: startWorkout)
+                VStack(spacing: 0) {
+                    if tab == .today, let workout = repository.selectedWorkout {
+                        TodayNextAction(workout: workout, active: engine.active,
+                                        units: repository.preferences.units, action: startWorkout)
+                    }
+                    TrainingTabBar(selection: $tab, coach: { sheet = .coach }, progress: { sheet = .rewards })
                 }
             }
             .toolbar(.hidden, for: .navigationBar)
@@ -70,6 +53,34 @@ struct TodayView: View {
             guard previous == .background, current == .active,
                   sheet == nil, !showingWorkout else { return }
             _ = repository.shuffleWorkout()
+        }
+    }
+    @ViewBuilder private var todayContent: some View {
+        header
+        storageNotice
+        if let workout = repository.selectedWorkout {
+            TodayWorkoutCard(workout: workout, active: engine.active, units: repository.preferences.units,
+                             adjust: { sheet = .adjust(workout) },
+                             change: { sheet = .choose }, shuffle: { _ = repository.shuffleWorkout() })
+                .trainingReveal(delay: 0.04)
+            ExerciseGuidesTodayCard(workout: workout) { sheet = .demos }
+            TrainingQuickActions(library: { sheet = .choose }, history: { sheet = .history })
+                .trainingReveal(delay: 0.1)
+            CoachTodayCard { sheet = .coach }.trainingReveal(delay: 0.12)
+            if repository.state.journey?.rewardsEnabled != false {
+                JourneyProgressCard(rewards: TrainingRewards(sessions: repository.sessions),
+                                    journey: repository.state.journey ?? TrainingJourney()) { sheet = .rewards }
+                    .trainingReveal(delay: 0.1)
+            }
+            WeeklyProgressCard(days: repository.weekDays()).trainingReveal(delay: 0.15)
+            WorkoutOutlineView(workout: workout, units: repository.preferences.units)
+            PlusToolsCard(isPlus: plus.isPlus) { sheet = .feature($0) }
+            recentSessions
+            footer
+        } else {
+            ContentUnavailableView("Your workouts are safe", systemImage: "externaldrive.badge.exclamationmark",
+                                   description: Text("We couldn’t open your local training data. Try again below."))
+            Button("Try again", action: repository.reload).buttonStyle(TrainingButtonStyle())
         }
     }
     private var header: some View {
