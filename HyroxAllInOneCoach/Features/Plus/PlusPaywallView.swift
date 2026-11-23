@@ -36,12 +36,16 @@ struct PlusPaywallView: View {
             .onChange(of: store.packages.map(\.identifier)) { _, _ in chooseAvailablePlan() }
         }
     }
+    /// "Train free for 7 days." when a plan offers this customer a trial.
+    private var trialHeadline: String? {
+        store.orderedPackages.compactMap { store.trialLength(for: $0) }.first.map { "Train free for \($0)." }
+    }
     private var hero: some View {
         VStack(alignment: .leading, spacing: 18) {
             VStack(alignment: .leading, spacing: 30) {
                 HStack { PlusBadge(); Spacer() }
                 Spacer(minLength: 45)
-                Text(store.isPlus ? "Your Plus.\nYour possibilities." : "Your training.\nYour way.")
+                Text(store.isPlus ? "Your Plus.\nYour possibilities." : (trialHeadline ?? "Your training.\nYour way."))
                     .font(.trainingDisplay()).textCase(.uppercase).tracking(-0.8)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(focus?.pitch ?? "Build your own sessions. See the bigger picture.")
