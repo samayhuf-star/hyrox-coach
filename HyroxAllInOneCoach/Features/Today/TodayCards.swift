@@ -21,7 +21,6 @@ struct TodayWorkoutCard: View {
         .background(TrainingTheme.surface, in: RoundedRectangle(cornerRadius: 26))
         .clipShape(RoundedRectangle(cornerRadius: 26))
         .overlay(RoundedRectangle(cornerRadius: 26).strokeBorder(TrainingTheme.border))
-        .shadow(color: TrainingTheme.shadow.opacity(0.08), radius: 22, y: 8)
     }
     private var workoutActions: some View {
         VStack(spacing: 4) {
@@ -59,7 +58,7 @@ struct TodayWorkoutCard: View {
             }
         }
         .frame(maxWidth: .infinity, minHeight: 165, alignment: .bottomLeading)
-        .padding(20).background { TrainingAurora() }
+        .padding(20).background(TrainingTheme.inset)
     }
     private var metrics: some View {
         let layout = typeSize.isAccessibilitySize

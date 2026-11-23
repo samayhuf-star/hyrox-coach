@@ -95,12 +95,21 @@ struct WorkoutPlayerView: View {
                 HStack { Eyebrow(text: session.workout.family.category); Spacer(); stepCount(session) }
                 VStack(alignment: .leading, spacing: 6) { Eyebrow(text: session.workout.family.category); stepCount(session) }
             }
-            ProgressView(value: Double(session.cursor), total: Double(max(1, session.steps.count)))
-                .tint(TrainingTheme.mint)
+            HStack(spacing: 3) {
+                ForEach(0..<max(1, session.steps.count), id: \.self) { index in
+                    Capsule().fill(segmentColor(index, cursor: session.cursor)).frame(height: 5)
+                }
+            }
                 .animation(reduceMotion ? nil : .spring(response: 0.5, dampingFraction: 0.85), value: session.cursor)
+                .accessibilityElement(children: .ignore)
                 .accessibilityLabel("Workout progress")
                 .accessibilityValue("\(session.cursor) of \(session.steps.count) steps recorded")
         }
+    }
+    /// Done steps in the accent, the current step in white, the rest muted.
+    private func segmentColor(_ index: Int, cursor: Int) -> Color {
+        if index < cursor { return TrainingTheme.accent }
+        return index == cursor ? TrainingTheme.primary : TrainingTheme.border
     }
     private func stepCount(_ session: ActiveSession) -> some View {
         Text("Step \(session.cursor + 1) of \(session.steps.count)")
@@ -143,11 +152,13 @@ struct WorkoutPlayerView: View {
             HStack(alignment: .center, spacing: 14) {
                 ExerciseDemoThumbnail(exercise: next.step.exercise)
                 VStack(alignment: .leading, spacing: 5) {
-                    Eyebrow(text: "Next up")
+                    Eyebrow(text: "Next", color: TrainingTheme.mint)
                     Text(next.step.title).font(.headline)
                     Text(next.step.targetText(units: repository.preferences.units)).font(.subheadline).foregroundStyle(TrainingTheme.secondary)
                 }
+                Spacer(minLength: 0)
             }
+            .trainingPanel(padding: 14)
         } else {
             Label("Next up: your workout summary", systemImage: "checkmark.seal").font(.body)
         }

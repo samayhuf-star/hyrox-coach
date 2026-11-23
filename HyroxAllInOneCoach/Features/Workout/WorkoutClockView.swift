@@ -4,7 +4,7 @@ struct WorkoutClockView: View {
     let session: ActiveSession
     let current: ExpandedStep
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @ScaledMetric(relativeTo: .largeTitle) private var clockSize = 62.0
+    @ScaledMetric(relativeTo: .largeTitle) private var clockSize = 88.0
     private var timed: Bool { current.step.targetKind == .time }
     private var accent: Color {
         session.isPaused ? TrainingTheme.blue : TrainingTheme.accent
@@ -30,11 +30,10 @@ struct WorkoutClockView: View {
         return ZStack {
             Circle().fill(RadialGradient(colors: [accent.opacity(0.08), .clear], center: .center, startRadius: 0, endRadius: 150))
             DialTicks().stroke(TrainingTheme.secondary.opacity(0.3), lineWidth: 1).padding(1)
-            Circle().stroke(TrainingTheme.border.opacity(0.7), lineWidth: 8).padding(15)
+            Circle().stroke(TrainingTheme.border, lineWidth: 12).padding(15)
             Circle().trim(from: 0, to: fraction)
-                .stroke(accent.gradient, style: StrokeStyle(lineWidth: 8, lineCap: .round))
+                .stroke(accent, style: StrokeStyle(lineWidth: 12, lineCap: .round))
                 .rotationEffect(.degrees(-90)).padding(15)
-                .shadow(color: accent.opacity(0.25), radius: 10)
                 .animation(reduceMotion ? nil : .linear(duration: 0.5), value: fraction)
             readout(displayed: displayed)
         }
@@ -46,8 +45,8 @@ struct WorkoutClockView: View {
                 .font(.title2).foregroundStyle(accent).accessibilityHidden(true)
             Eyebrow(text: session.isPaused ? "Paused" : (timed ? "Time remaining" : "Step elapsed"))
             Text(TrainingFormat.clock(displayed))
-                .font(.system(size: clockSize, weight: .bold, design: .rounded).monospacedDigit())
-                .tracking(-2).minimumScaleFactor(0.35).lineLimit(1)
+                .font(.custom("BarlowCondensed-Bold", size: clockSize).monospacedDigit())
+                .minimumScaleFactor(0.35).lineLimit(1)
                 .contentTransition(.numericText(countsDown: timed))
                 .animation(reduceMotion ? nil : .easeInOut(duration: 0.2), value: Int(displayed))
                 .accessibilityLabel(timed ? "Time remaining" : "Step elapsed")
