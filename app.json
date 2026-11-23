@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Hybrid Trainer",
+    "slug": "hybrid-trainer",
+    "owner": "krosz",
+    "version": "1.0",
+    "platforms": [
+      "ios"
+    ],
+    "ios": {
+      "bundleIdentifier": "com.superapp.hyroxallinonecoachyzr40",
+      "buildNumber": "20"
+    }
+  }
+}

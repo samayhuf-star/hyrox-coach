@@ -1,0 +1,6 @@
+{
+  "name": "hybrid-trainer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Native SwiftUI app. This file exists so Expo's build service (EAS) accepts the project."
+}

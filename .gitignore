@@ -45,3 +45,8 @@ fastlane/test_output
 node_modules/
 website/dist/
 website/.output/
+
+# CocoaPods output (generated on the build machine)
+ios/Pods/
+ios/*.xcworkspace
+node_modules/

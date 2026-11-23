@@ -35,10 +35,12 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Generate Xcode project
+        working-directory: ios
         run: |
           brew install xcodegen
           xcodegen generate
       - name: Compile (simulator, unsigned)
+        working-directory: ios
         run: |
           set -o pipefail
           xcodebuild build \
@@ -78,6 +80,7 @@ jobs:
         with:
           xcode-version: latest-stable
       - name: Generate Xcode project
+        working-directory: ios
         run: |
           brew install xcodegen
           xcodegen generate
@@ -86,6 +89,7 @@ jobs:
           mkdir -p "$RUNNER_TEMP/keys"
           printf '%s\n' "$ASC_KEY_P8" > "$RUNNER_TEMP/keys/AuthKey_${ASC_KEY_ID}.p8"
       - name: Archive
+        working-directory: ios
         run: |
           set -o pipefail
           BUILD_NUMBER=$((GITHUB_RUN_NUMBER + BUILD_OFFSET))
@@ -101,6 +105,7 @@ jobs:
             -authenticationKeyID "$ASC_KEY_ID" \
             -authenticationKeyIssuerID "$ASC_ISSUER_ID" | tail -n 200
       - name: Upload to TestFlight
+        working-directory: ios
         run: |
           set -o pipefail
           cat > "$RUNNER_TEMP/ExportOptions.plist" <<PLIST
