@@ -93,6 +93,22 @@ extension Exercise {
                 DemoPose(title: "Keep steps short", cue: "Keep your hands secure and avoid rounding your back."),
                 DemoPose(title: "Alternate steadily", cue: "Continue short, controlled steps. Ask a coach to check your setup if this is new.")
             ])
+        case "sledpull":
+            // Uses the sled photo as a still until dedicated pull artwork is added.
+            MovementDemo(asset: "DemoSled", poses: [
+                DemoPose(title: "Set up safely", cue: "Choose a light sled and a clear lane. Lay the rope out straight so it can’t wrap around your feet."),
+                DemoPose(title: "Sit back", cue: "Bend your knees, keep your back neutral and hold the rope with straight arms."),
+                DemoPose(title: "Pull hand over hand", cue: "Lean back gently and draw the rope toward your hips with steady pulls."),
+                DemoPose(title: "Reset and repeat", cue: "Let the rope fall behind or beside you, never under your feet. Rest whenever you need to.")
+            ], frames: [0, 0, 0, 0], interval: 2.0, still: true)
+        case "burpee":
+            // Uses the squat photo as a still until dedicated burpee artwork is added.
+            MovementDemo(asset: "DemoSquat", poses: [
+                DemoPose(title: "Hands down", cue: "Place both hands on the floor in front of your feet."),
+                DemoPose(title: "Chest to the floor", cue: "Step or hop your feet back and lower your chest. Stepping is always fine."),
+                DemoPose(title: "Stand up", cue: "Step or hop your feet forward and stand tall."),
+                DemoPose(title: "Jump forward", cue: "Take off and land on both feet together, softly. Keep jumps small and repeatable.")
+            ], frames: [0, 0, 0, 0], interval: 2.0, still: true)
         case "rest":
             MovementDemo(asset: "DemoWalk", poses: [
                 DemoPose(title: "Stand comfortably", cue: "Let your arms hang loosely. Sit or walk slowly if that feels better."),

@@ -26,7 +26,9 @@ Deno.serve(async (req: Request) => {
   userID = user.id;
   const raw = await req.text();
   if (raw.length>16000) throw new Error('invalid_request');
-  const body = JSON.parse(raw);
+  let body;
+  try { body = JSON.parse(raw); } catch { throw new Error('invalid_request'); }
+  if (body === null || typeof body !== 'object' || Array.isArray(body)) throw new Error('invalid_request');
   const hash = await identity(user.email);
   await rpc('coach_reconcile',{p_user:user.id});
   await rpc('coach_wallet',{p_user:user.id,p_identity:hash});
@@ -36,8 +38,9 @@ Deno.serve(async (req: Request) => {
   if (body.action === 'consent') await db(`coach_accounts?user_id=eq.${user.id}`, 'PATCH', { consent_at: body.accepted === true ? new Date().toISOString() : null });
   else if (body.action === 'delete_account') {
    await rpc('coach_begin_delete',{p_user:user.id});
-   try { await removeAuthUser(user.id); }
-   catch (error) { await db(`coach_accounts?user_id=eq.${user.id}`,'PATCH',{deleting:false}); throw error; }
+   // When this project's sign-ins are shared with another product, erase the Coach data but keep the sign-in.
+   try { if (Deno.env.get('COACH_KEEP_AUTH_USER') === 'true') await rpc('coach_erase',{p_user:user.id}); else await removeAuthUser(user.id); }
+   catch (error) { await db(`coach_accounts?user_id=eq.${user.id}`,'PATCH',{deleting:false}); throw new Error('delete_unavailable'); }
    return json({ deleted:true });
   } else if (body.action === 'delete_conversation') {
    if (!uuid(conversation)) throw new Error('invalid_request');
@@ -70,6 +73,6 @@ Deno.serve(async (req: Request) => {
    try { await rpc('coach_settle',{p_user:userID,p_id:requestID,p_answer:null}); } catch { /* Expired reservations reconcile under the same account lock. */ }
   }
   const code=error instanceof Error ? error.message : '';
-  return json({error:messages[code] ?? 'Coach is temporarily unavailable. Refresh to recover any reply already saved. You will not be charged twice.',code:messages[code]?code:'unavailable'},code==='sign_in_required'?401:code==='no_credits'?402:code==='rate_limit'?429:503);
+  return json({error:messages[code] ?? 'Coach is temporarily unavailable. Refresh to recover any reply already saved. You will not be charged twice.',code:messages[code]?code:'unavailable'},code==='sign_in_required'?401:code==='no_credits'?402:code==='rate_limit'?429:['invalid_request','request_conflict','request_deleted','consent_required','verified_email_required'].includes(code)?400:503);
  }
 });

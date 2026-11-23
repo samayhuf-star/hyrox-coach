@@ -50,6 +50,11 @@ struct WorkoutPlayerView: View {
                     guide = engine.active?.current?.step.exercise
                 }.id(current.id)
                 WorkoutClockView(session: session, current: current)
+                if session.autoPaused == true {
+                    Label("Paused for you after a long break on this step. Tap resume when you’re ready; the extra time wasn’t counted.",
+                          systemImage: "pause.circle")
+                        .font(.subheadline).foregroundStyle(TrainingTheme.secondary)
+                }
                 movementGuidance(current)
                 nextPreview(session)
                 if let error = repository.storageError { Text(error).font(.body) }

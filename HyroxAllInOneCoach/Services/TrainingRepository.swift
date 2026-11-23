@@ -5,6 +5,11 @@ import Observation
 protocol TrainingStorage {
     func load() throws -> TrainingSnapshot?
     func save(_ snapshot: TrainingSnapshot) throws
+    /// Moves unreadable saved data aside (kept as a backup) so a fresh start is possible.
+    func setAsideDamagedData() throws
+}
+extension TrainingStorage {
+    func setAsideDamagedData() throws {}
 }
 
 @MainActor
@@ -31,6 +36,12 @@ final class LocalTrainingStorage: TrainingStorage {
             }
         }
         return snapshot
+    }
+    func setAsideDamagedData() throws {
+        guard FileManager.default.fileExists(atPath: fileURL.path) else { return }
+        let stamp = Int(Date().timeIntervalSince1970)
+        let backup = fileURL.deletingLastPathComponent().appendingPathComponent("HybridTraining-v1.damaged-\(stamp).json")
+        try FileManager.default.moveItem(at: fileURL, to: backup)
     }
     func save(_ snapshot: TrainingSnapshot) throws {
         try FileManager.default.createDirectory(at: fileURL.deletingLastPathComponent(), withIntermediateDirectories: true)
@@ -77,6 +88,19 @@ final class TrainingRepository {
             storageError = "Your saved data couldn’t be opened. Nothing has been replaced. Please try again."
             NSLog("Training storage could not be opened: %@", String(describing: error))
         }
+    }
+    /// Last resort when saved data can never be opened: keep the damaged file as a backup and begin again.
+    @discardableResult
+    func startFresh() -> Bool {
+        guard !isReadable else { return false }
+        do { try storage.setAsideDamagedData() }
+        catch {
+            storageError = "The damaged data couldn’t be moved aside. Nothing has been replaced. Please try again."
+            NSLog("Training storage could not be set aside: %@", String(describing: error))
+            return false
+        }
+        reload()
+        return isReadable
     }
     @discardableResult
     private func commit(_ snapshot: TrainingSnapshot) -> Bool {

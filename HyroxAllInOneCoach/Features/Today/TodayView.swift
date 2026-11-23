@@ -9,6 +9,7 @@ struct TodayView: View {
     @State private var sheet: TodaySheet?
     @State private var showingWorkout = false
     @State private var sessionsBeforePlayer: [SessionRecord] = []
+    @State private var confirmStartFresh = false
 
     var body: some View {
         NavigationStack {
@@ -108,8 +109,17 @@ struct TodayView: View {
             VStack(alignment: .leading, spacing: 10) {
                 Label(error, systemImage: "exclamationmark.triangle").font(.body)
                 Button("Try again", action: repository.reload).font(.headline)
+                if !repository.isReadable {
+                    Button("Start fresh (keeps a backup)") { confirmStartFresh = true }.font(.subheadline)
+                }
             }
             .trainingPanel()
+            .confirmationDialog("Start with fresh data?", isPresented: $confirmStartFresh, titleVisibility: .visible) {
+                Button("Start fresh", role: .destructive) { _ = repository.startFresh() }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Your saved workouts and history can’t be opened. The damaged file is kept on this iPhone as a backup, and the app starts again with the starter sessions.")
+            }
         }
     }
     private var recentSessions: some View {
