@@ -61,7 +61,7 @@ struct OnboardingView: View {
             }
             HStack(spacing: 5) {
                 ForEach(0..<5, id: \.self) { step in
-                    Capsule().fill(step <= page ? TrainingTheme.mint : TrainingTheme.border).frame(height: 4)
+                    Capsule().fill(step <= page ? TrainingTheme.primary : TrainingTheme.border).frame(height: 4)
                 }
             }
             .accessibilityElement(children: .ignore).accessibilityLabel("Setup step \(page + 1) of 5")
@@ -86,8 +86,6 @@ struct OnboardingView: View {
     private var welcome: some View {
         VStack(alignment: .leading, spacing: 22) {
             WelcomeHeroView().accessibilityFocused($headingFocused)
-            benefit("Small steps. Real momentum.", detail: "Guided sessions, flexible rest and a little celebration for every effort.", symbol: "sparkles")
-                .trainingReveal(delay: 0.22)
             Label("No account needed · Works offline", systemImage: "checkmark.shield")
                 .font(.subheadline).foregroundStyle(TrainingTheme.secondary)
         }
@@ -179,7 +177,7 @@ struct OnboardingView: View {
                 if page < 4 { move(to: page + 1) }
                 else { finish(useCurrentSetup: false) }
             } label: {
-                Label(page == 4 ? "Let’s train" : (page == 0 ? "Make it yours" : "Continue"),
+                Label(page == 4 ? "Let’s train" : (page == 0 ? "Build my plan" : "Continue"),
                       systemImage: page == 4 ? "checkmark" : "arrow.right")
             }
             .buttonStyle(TrainingButtonStyle())

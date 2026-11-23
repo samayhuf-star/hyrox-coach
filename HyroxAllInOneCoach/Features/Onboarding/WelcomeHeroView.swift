@@ -2,50 +2,44 @@ import SwiftUI
 
 struct WelcomeHeroView: View {
     @Environment(\.dynamicTypeSize) private var typeSize
-    @ScaledMetric(relativeTo: .largeTitle) private var headlineSize = 42.0
+    @ScaledMetric(relativeTo: .largeTitle) private var headlineSize = 58.0
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
+        VStack(alignment: .leading, spacing: 18) {
+            lanes.trainingReveal()
             cover
-            Text("Running meets strength.\nProgress meets possibility.")
-                .font(.title3.weight(.medium)).foregroundStyle(TrainingTheme.primary)
-                .trainingReveal(delay: 0.12)
-            HStack(spacing: 8) {
-                tag("Your level", symbol: "chart.bar")
-                tag("Your time", symbol: "clock")
-                tag("Your pace", symbol: "heart")
-            }
-            .trainingReveal(delay: 0.18)
+            Text("A training plan that mixes running and strength the way a hybrid race does. Built around your week in about a minute.")
+                .font(.body).foregroundStyle(TrainingTheme.secondary)
+                .trainingReveal(delay: 0.18)
         }
+    }
+    /// Alternating run and strength bars: the rhythm of a hybrid session.
+    private var lanes: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            lane("RUN", width: 0.88, color: TrainingTheme.accent)
+            lane("STRENGTH", width: 0.68, color: TrainingTheme.mint)
+            lane("RUN", width: 0.80, color: TrainingTheme.accent)
+            lane("STRENGTH", width: 0.54, color: TrainingTheme.mint)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityHidden(true)
+    }
+    private func lane(_ text: String, width: CGFloat, color: Color) -> some View {
+        Text(text).font(.trainingDisplay(.title3)).tracking(1)
+            .foregroundStyle(TrainingTheme.onAccent)
+            .padding(.leading, 14).frame(height: 46)
+            .containerRelativeFrame(.horizontal, alignment: .leading) { length, _ in length * width }
+            .background(color, in: RoundedRectangle(cornerRadius: 8))
     }
     private var cover: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack {
-                Eyebrow(text: "Strength × Endurance", color: TrainingTheme.mint)
-                Spacer()
-                Image(systemName: "arrow.up.right").foregroundStyle(TrainingTheme.mint).accessibilityHidden(true)
-            }
-            Spacer(minLength: 100)
-            Text("A stronger you.").font(.system(size: headlineSize, weight: .bold)).tracking(-1.2)
+        VStack(alignment: .leading, spacing: 4) {
+            Eyebrow(text: "Hybrid Trainer", color: TrainingTheme.accent).padding(.top, typeSize.isAccessibilitySize ? 8 : 28)
+            Text("Run strong.\nLift fast.\nRace ready.")
+                .font(.custom("BarlowCondensed-Bold", size: headlineSize)).textCase(.uppercase)
                 .fixedSize(horizontal: false, vertical: true)
-            Text("At your pace.").font(.system(size: headlineSize, weight: .bold)).tracking(-1.2)
-                .foregroundStyle(TrainingTheme.mint).fixedSize(horizontal: false, vertical: true)
-            Text("WELCOME TO HYBRID TRAINING").font(.caption.weight(.semibold)).tracking(1.6)
-                .padding(.top, 4)
         }
-        .padding(24).frame(maxWidth: .infinity, minHeight: typeSize.isAccessibilitySize ? 420 : 340, alignment: .leading)
-        .background { TrainingAurora() }
-        .clipShape(RoundedRectangle(cornerRadius: 28))
-        .overlay(RoundedRectangle(cornerRadius: 28).strokeBorder(TrainingTheme.border))
+        .frame(maxWidth: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine).accessibilityAddTraits(.isHeader)
-        .trainingReveal()
-    }
-    private func tag(_ text: String, symbol: String) -> some View {
-        VStack(spacing: 7) {
-            Image(systemName: symbol).foregroundStyle(TrainingTheme.mint).accessibilityHidden(true)
-            Text(text).foregroundStyle(TrainingTheme.secondary)
-        }
-        .font(.caption.weight(.medium)).frame(maxWidth: .infinity)
-        .padding(.vertical, 13).background(TrainingTheme.accentSoft, in: RoundedRectangle(cornerRadius: 14))
+        .trainingReveal(delay: 0.1)
     }
 }
 
