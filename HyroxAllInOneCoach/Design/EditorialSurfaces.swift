@@ -74,7 +74,7 @@ struct HybridBrand: View {
             Text("TRAINING").font(.caption2.weight(.medium)).tracking(1)
                 .foregroundStyle(TrainingTheme.secondary)
         }
-        .accessibilityElement(children: .ignore).accessibilityLabel("Hybrid Training")
+        .accessibilityElement(children: .ignore).accessibilityLabel("Hybrid Trainer")
     }
 }
 

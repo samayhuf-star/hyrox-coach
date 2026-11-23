@@ -33,6 +33,27 @@ final class PlusPurchaseStore {
     }
     var monthly: Package? { packages.first { $0.packageType == .monthly } }
     var annual: Package? { packages.first { $0.packageType == .annual } }
+    private(set) var trialEligible: Set<String> = []
+    static let planOrder: [PackageType] = [.annual, .monthly, .weekly, .lifetime]
+    /// Plans in the order they are shown: annual, monthly, weekly, lifetime.
+    var orderedPackages: [Package] {
+        Self.planOrder.compactMap { type in packages.first { $0.packageType == type } }
+    }
+    var hasTrialOffer: Bool { !trialEligible.isEmpty }
+    /// "7 days" style length of the free trial this customer can still use, if the plan has one.
+    func trialLength(for package: Package) -> String? {
+        guard trialEligible.contains(package.identifier),
+              let offer = package.storeProduct.introductoryDiscount,
+              offer.paymentMode == .freeTrial else { return nil }
+        let count = offer.subscriptionPeriod.value
+        switch offer.subscriptionPeriod.unit {
+        case .day: return count == 1 ? "1 day" : "\(count) days"
+        case .week: return "\(count * 7) days"
+        case .month: return count == 1 ? "1 month" : "\(count) months"
+        case .year: return count == 1 ? "1 year" : "\(count) years"
+        default: return nil
+        }
+    }
 
     func listen() async {
         guard !listening else { return }
@@ -57,7 +78,13 @@ final class PlusPurchaseStore {
         do {
             let offerings = try await Purchases.shared.offerings()
             packages = (offerings.offering(identifier: Self.offering)?.availablePackages ?? [])
-                .filter { $0.packageType == .annual || $0.packageType == .monthly }
+                .filter { Self.planOrder.contains($0.packageType) }
+            var eligible: Set<String> = []
+            for package in packages where package.storeProduct.introductoryDiscount?.paymentMode == .freeTrial {
+                let status = await Purchases.shared.checkTrialOrIntroDiscountEligibility(product: package.storeProduct)
+                if status == .eligible { eligible.insert(package.identifier) }
+            }
+            trialEligible = eligible
             if packages.isEmpty {
                 message = "Plans aren’t available yet. You can keep training for free and try again later."
             }
