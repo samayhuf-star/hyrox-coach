@@ -65,13 +65,13 @@ struct HybridBrand: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 12).fill(TrainingTheme.actionGradient)
                 HStack(spacing: 3) {
-                    Capsule().fill(.white.opacity(0.7)).frame(width: 5, height: 15)
-                    Capsule().fill(.white).frame(width: 5, height: 23)
-                    Capsule().fill(.white.opacity(0.7)).frame(width: 5, height: 15)
+                    Capsule().fill(TrainingTheme.onAccent.opacity(0.7)).frame(width: 5, height: 15)
+                    Capsule().fill(TrainingTheme.onAccent).frame(width: 5, height: 23)
+                    Capsule().fill(TrainingTheme.onAccent.opacity(0.7)).frame(width: 5, height: 15)
                 }.rotationEffect(.degrees(22))
             }.frame(width: 38, height: 38).accessibilityHidden(true)
             Text("HYBRID").font(.headline.weight(.bold)).tracking(1.5)
-            Text("TRAINING").font(.caption2.weight(.medium)).tracking(1)
+            Text("TRAINER").font(.caption2.weight(.medium)).tracking(1)
                 .foregroundStyle(TrainingTheme.secondary)
         }
         .accessibilityElement(children: .ignore).accessibilityLabel("Hybrid Trainer")

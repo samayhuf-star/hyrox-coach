@@ -24,7 +24,7 @@ struct ExerciseGuideView: View {
     private var title: some View {
         VStack(alignment: .leading, spacing: 8) {
             Eyebrow(text: "See it. Then try it.")
-            Text(exercise.title).font(.largeTitle.weight(.bold)).tracking(-0.8)
+            Text(exercise.title).font(.trainingDisplay()).textCase(.uppercase).tracking(-0.8)
             Label(exercise.equipment?.title ?? "No equipment needed", systemImage: "dumbbell")
                 .font(.subheadline).foregroundStyle(TrainingTheme.secondary)
             if sessionPaused {
@@ -68,7 +68,7 @@ struct ExerciseGuideLibraryView: View {
     private var introduction: some View {
         VStack(alignment: .leading, spacing: 10) {
             Eyebrow(text: "Your movement library")
-            Text("A little clarity.\nMore confidence.").font(.largeTitle.weight(.bold)).tracking(-0.8)
+            Text("A little clarity.\nMore confidence.").font(.trainingDisplay()).textCase(.uppercase).tracking(-0.8)
             Text("Tap any movement for a looping illustration. Pause, slow it down or explore each position using the arrows. Available offline, with no account or credits.")
                 .font(.body).foregroundStyle(TrainingTheme.secondary)
         }.padding(.bottom, 8)

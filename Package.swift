@@ -13,7 +13,7 @@ let package = Package(
             name: "HyroxCore",
             dependencies: ["UIKit", "AudioToolbox"],
             path: "HyroxAllInOneCoach",
-            exclude: ["Assets.xcassets", "PrivacyInfo.xcprivacy", "Base.lproj", "Design", "Features", "HybridTrainingApp.swift", "Info.plist",
+            exclude: ["Assets.xcassets", "PrivacyInfo.xcprivacy", "Fonts", "Base.lproj", "Design", "Features", "HybridTrainingApp.swift", "Info.plist",
                       "Services/CoachAPI.swift", "Services/CoachAccount.swift", "Services/CoachStore.swift",
                       "Services/PlusPurchaseStore.swift"],
             sources: ["Models", "Services/WorkoutSessionEngine.swift", "Services/TrainingRepository.swift"]

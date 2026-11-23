@@ -55,6 +55,8 @@ targets:
           - CFBundleURLName: Coach sign-in
             CFBundleURLSchemes: [hybridcoach]
         ITSAppUsesNonExemptEncryption: false
+        UIAppFonts: [BarlowCondensed-Bold.ttf, BarlowCondensed-SemiBold.ttf]
+        UIUserInterfaceStyle: Dark
         LSRequiresIPhoneOS: true
         UIApplicationSupportsIndirectInputEvents: true
         UILaunchStoryboardName: LaunchScreen

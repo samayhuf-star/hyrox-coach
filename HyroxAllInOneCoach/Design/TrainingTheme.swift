@@ -2,22 +2,25 @@ import SwiftUI
 import UIKit
 
 enum TrainingTheme {
-    static let background = adaptive(0xF6F8FC, dark: 0x10182C)
-    static let surface = adaptive(0xFFFFFF, dark: 0x19243B)
-    static let border = adaptive(0xDFE5F0, dark: 0x34425E)
-    static let primary = adaptive(0x0A2540, dark: 0xF3F5FF)
-    static let secondary = adaptive(0x52647A, dark: 0xAFBED4)
-    static let accent = adaptive(0x554BE3, dark: 0xA69FFF)
-    static let mint = accent
-    static let blue = adaptive(0x196FAD, dark: 0x75CFFF)
-    static let lavender = adaptive(0x8B80F9, dark: 0xBDB4FF)
-    static let inset = adaptive(0xF1F4FA, dark: 0x111D33)
-    static let accentSoft = adaptive(0xEEEDFF, dark: 0x2A2851)
-    static let heroBase = adaptive(0xF0F2FF, dark: 0x202D4C)
-    static let glowViolet = adaptive(0xDAD5FF, dark: 0x473A7B)
-    static let glowBlue = adaptive(0xB9E8FF, dark: 0x1B5479)
-    static let shadow = adaptive(0x243F70, dark: 0x000815)
-    static let actionGradient = LinearGradient(colors: [Color(hex: 0x635BFF), Color(hex: 0x5145CD)],
+    static let background = adaptive(0x0B0B0E, dark: 0x0B0B0E)
+    static let surface = adaptive(0x17171C, dark: 0x17171C)
+    static let border = adaptive(0x2B2B33, dark: 0x2B2B33)
+    static let primary = adaptive(0xF4F4F6, dark: 0xF4F4F6)
+    static let secondary = adaptive(0xA7A7B3, dark: 0xA7A7B3)
+    static let accent = adaptive(0x8B7BFF, dark: 0x8B7BFF)
+    /// Second accent: strength work, ticks and highlights.
+    static let mint = adaptive(0x5EEAD4, dark: 0x5EEAD4)
+    /// Text and icons that sit on an accent fill.
+    static let onAccent = adaptive(0x0B0B0E, dark: 0x0B0B0E)
+    static let blue = adaptive(0x75CFFF, dark: 0x75CFFF)
+    static let lavender = adaptive(0x8B7BFF, dark: 0x8B7BFF)
+    static let inset = adaptive(0x111116, dark: 0x111116)
+    static let accentSoft = adaptive(0x23213F, dark: 0x23213F)
+    static let heroBase = adaptive(0x17171C, dark: 0x17171C)
+    static let glowViolet = adaptive(0x2A2550, dark: 0x2A2550)
+    static let glowBlue = adaptive(0x1E1E26, dark: 0x1E1E26)
+    static let shadow = adaptive(0x000000, dark: 0x000000)
+    static let actionGradient = LinearGradient(colors: [Color(hex: 0x8B7BFF), Color(hex: 0x8B7BFF)],
                                               startPoint: .topLeading, endPoint: .bottomTrailing)
 
     private static func adaptive(_ light: UInt32, dark: UInt32) -> Color {
@@ -27,6 +30,21 @@ enum TrainingTheme {
                            green: CGFloat((hex >> 8) & 255) / 255,
                            blue: CGFloat(hex & 255) / 255, alpha: 1)
         })
+    }
+}
+
+extension Font {
+    /// Condensed display face for headings and buttons. Scales with Dynamic Type.
+    static func trainingDisplay(_ style: Font.TextStyle = .largeTitle) -> Font {
+        let size: CGFloat
+        switch style {
+        case .largeTitle: size = 44
+        case .title: size = 36
+        case .title2: size = 28
+        case .title3: size = 22
+        default: size = 20
+        }
+        return .custom("BarlowCondensed-Bold", size: size, relativeTo: style)
     }
 }
 
@@ -40,14 +58,14 @@ private extension Color {
 extension View {
     func trainingPanel(padding: CGFloat = 20) -> some View {
         self.padding(padding)
-            .background(TrainingTheme.surface, in: RoundedRectangle(cornerRadius: 24))
-            .overlay(RoundedRectangle(cornerRadius: 24).strokeBorder(TrainingTheme.border, lineWidth: 1))
-            .shadow(color: TrainingTheme.shadow.opacity(0.045), radius: 16, x: 0, y: 6)
+            .background(TrainingTheme.surface, in: RoundedRectangle(cornerRadius: 20))
+            .overlay(RoundedRectangle(cornerRadius: 20).strokeBorder(TrainingTheme.border, lineWidth: 1))
     }
     func trainingScreen() -> some View {
         self.background(TrainingTheme.background)
             .foregroundStyle(TrainingTheme.primary)
             .tint(TrainingTheme.accent)
+            .preferredColorScheme(.dark)
     }
 }
 
@@ -56,21 +74,21 @@ struct TrainingButtonStyle: ButtonStyle {
     var prominent = true
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .font(.headline)
+            .font(.trainingDisplay(.title3))
+            .textCase(.uppercase)
             .multilineTextAlignment(.center)
             .frame(maxWidth: .infinity, minHeight: 56)
-            .padding(.horizontal, 14)
+            .padding(.horizontal, 18)
             .padding(.vertical, 3)
-            .foregroundStyle(prominent ? Color.white : TrainingTheme.primary)
+            .foregroundStyle(prominent ? TrainingTheme.onAccent : TrainingTheme.primary)
             .background {
                 if prominent {
-                    RoundedRectangle(cornerRadius: 18).fill(TrainingTheme.actionGradient)
+                    Capsule().fill(TrainingTheme.accent)
                 } else {
-                    RoundedRectangle(cornerRadius: 18).fill(TrainingTheme.surface)
+                    Capsule().fill(Color.clear)
                 }
             }
-            .overlay(RoundedRectangle(cornerRadius: 18).strokeBorder(prominent ? .white.opacity(0.2) : TrainingTheme.border, lineWidth: 1))
-            .shadow(color: prominent ? TrainingTheme.accent.opacity(0.2) : .clear, radius: 12, y: 5)
+            .overlay(Capsule().strokeBorder(prominent ? Color.clear : TrainingTheme.border, lineWidth: 1.5))
             .opacity(configuration.isPressed ? 0.85 : 1)
             .scaleEffect(configuration.isPressed && !reduceMotion ? 0.97 : 1)
             .animation(reduceMotion ? nil : .spring(response: 0.3, dampingFraction: 0.7), value: configuration.isPressed)

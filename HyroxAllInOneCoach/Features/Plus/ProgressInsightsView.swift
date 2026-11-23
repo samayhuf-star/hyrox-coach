@@ -33,7 +33,7 @@ struct ProgressInsightsView: View {
     private var header: some View {
         VStack(alignment: .leading, spacing: 12) {
             PlusBadge()
-            Text("Your effort.\nThe bigger picture.").font(.largeTitle.bold())
+            Text("Your effort.\nThe bigger picture.").font(.trainingDisplay()).textCase(.uppercase)
             Text("Look for a rhythm that works for you—not a score to chase.").font(.body).foregroundStyle(TrainingTheme.secondary)
         }
     }

@@ -114,7 +114,7 @@ struct WorkoutPlayerView: View {
                     Text("Round \(round) / \(session.workout.rounds)").font(.subheadline).foregroundStyle(TrainingTheme.secondary)
                 }
             }
-            Text(current.step.title).font(.largeTitle.weight(.heavy)).tracking(-1).fixedSize(horizontal: false, vertical: true)
+            Text(current.step.title).font(.trainingDisplay()).textCase(.uppercase).tracking(-1).fixedSize(horizontal: false, vertical: true)
             Text(current.step.targetText(units: repository.preferences.units)).font(.title2.weight(.semibold))
                 .foregroundStyle(TrainingTheme.mint)
             if let original = current.step.substitutionFor {

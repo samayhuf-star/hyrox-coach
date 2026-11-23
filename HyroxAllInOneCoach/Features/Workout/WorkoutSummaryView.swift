@@ -66,7 +66,7 @@ struct WorkoutSummaryView: View {
                 StatusPill(text: isNew ? "Ready to save" : "Saved on iPhone", symbol: isNew ? nil : "checkmark")
             }
             Text(draft.completedCount > 0 ? "You showed up." : "Listen to your body.")
-                .font(.largeTitle.weight(.bold))
+                .font(.trainingDisplay()).textCase(.uppercase)
             Text(draft.workout.title).font(.title3.weight(.semibold))
             Text(draft.startedAt, format: .dateTime.month(.wide).day().hour().minute())
                 .font(.subheadline).foregroundStyle(TrainingTheme.secondary)

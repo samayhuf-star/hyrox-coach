@@ -42,7 +42,7 @@ struct PlusPaywallView: View {
                 HStack { PlusBadge(); Spacer() }
                 Spacer(minLength: 45)
                 Text(store.isPlus ? "Your Plus.\nYour possibilities." : "Your training.\nYour way.")
-                    .font(.largeTitle.weight(.bold)).tracking(-0.8)
+                    .font(.trainingDisplay()).textCase(.uppercase).tracking(-0.8)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(focus?.pitch ?? "Build your own sessions. See the bigger picture.")
                     .font(.body).foregroundStyle(TrainingTheme.primary.opacity(0.85))

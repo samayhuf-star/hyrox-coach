@@ -89,7 +89,7 @@ struct TodayView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(Date(), format: .dateTime.weekday(.wide).month(.abbreviated).day())
                         .font(.subheadline).foregroundStyle(TrainingTheme.secondary)
-                    Text("Today, your way.").font(.largeTitle.weight(.bold)).tracking(-1.2)
+                    Text("Today, your way.").font(.trainingDisplay()).textCase(.uppercase).tracking(-1.2)
                         .accessibilityAddTraits(.isHeader)
                 }
                 Spacer(minLength: 0)

@@ -36,7 +36,7 @@ struct CoachIntroduction: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
             HStack { CoachEmblem(); Spacer(); StatusPill(text: "AI · NOT A HUMAN TRAINER") }
-            Text("Meet your\nCoach.").font(.largeTitle.bold())
+            Text("Meet your\nCoach.").font(.trainingDisplay()).textCase(.uppercase)
             Text("Questions welcome.\nPressure not included.").font(.title3.weight(.semibold)).foregroundStyle(TrainingTheme.accent)
             Text("Understand a movement, adapt your session, or make space for rest. A training assistant in your corner—not a substitute for professional care.")
                 .font(.body).foregroundStyle(TrainingTheme.secondary)

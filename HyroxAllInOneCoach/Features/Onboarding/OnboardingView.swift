@@ -192,7 +192,7 @@ struct OnboardingView: View {
     private func heading(_ title: String, detail: String) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             Eyebrow(text: page == 0 ? "Welcome to Hybrid Trainer" : "Make it yours · \(page + 1) / 5", color: TrainingTheme.mint)
-            Text(title).font(.largeTitle.weight(.bold)).fixedSize(horizontal: false, vertical: true)
+            Text(title).font(.trainingDisplay()).textCase(.uppercase).fixedSize(horizontal: false, vertical: true)
                 .accessibilityAddTraits(.isHeader).accessibilityFocused($headingFocused)
             Text(detail).font(.body).foregroundStyle(TrainingTheme.secondary)
         }

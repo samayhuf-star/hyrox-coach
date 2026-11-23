@@ -168,7 +168,7 @@ struct RewardCelebrationView: View {
                     emblem
                     Eyebrow(text: "Workout saved", color: TrainingTheme.mint)
                     Text(receipt.leveledUp ? "A new level.\nA stronger foundation." : "A little effort.\nA real step forward.")
-                        .font(.largeTitle.weight(.bold)).multilineTextAlignment(.center)
+                        .font(.trainingDisplay()).textCase(.uppercase).multilineTextAlignment(.center)
                     Text("+\(receipt.points) XP").font(.largeTitle.monospacedDigit().weight(.bold))
                         .foregroundStyle(TrainingTheme.mint).trainingReveal(delay: 0.15)
                     Text("Level \(receipt.rewards.level) · \(receipt.rewards.levelTitle)").font(.headline)

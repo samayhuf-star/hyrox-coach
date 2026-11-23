@@ -54,7 +54,7 @@ struct TodayWorkoutCard: View {
             }
             VStack(alignment: .leading, spacing: 9) {
                 Eyebrow(text: displayed.family.category, color: TrainingTheme.mint)
-                Text(displayed.title).font(.largeTitle.weight(.bold)).tracking(-0.8)
+                Text(displayed.title).font(.trainingDisplay()).textCase(.uppercase).tracking(-0.8)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
