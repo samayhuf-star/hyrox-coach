@@ -10,10 +10,13 @@
 		0112592A74BEAC7C98109C3D /* WorkoutPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D8AB0E4CA1EFD8E1E53428D /* WorkoutPlayerView.swift */; };
 		035E494F3D24DD1B63835BAF /* TrainingPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6ABEF8D23051E5BBAC98F4 /* TrainingPreferencesView.swift */; };
 		0B3822BB5395A69398F9DBB1 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 2897E3A023C6405DE8382635 /* RevenueCat */; };
+		0BB6AB3445E3E5B1A38DE850 /* DemoMarch.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C454B778DFAE32E9D62C7EF1 /* DemoMarch.mp4 */; };
 		0C11935EE89866F7377D062A /* JourneySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0BB9F88DB6EA141D8B270 /* JourneySettingsView.swift */; };
 		11ABFDA29B4474AB52DBF9C3 /* TrainingPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837A8CC20A695722349EE405 /* TrainingPlanView.swift */; };
+		18D39E8954928E0C7BB919C7 /* DemoSki.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F571D5B3DC4C5C5B559D153F /* DemoSki.mp4 */; };
 		1A699276995507A448D57379 /* CustomWorkoutBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50E6DDE7CD5B74AA936DC352 /* CustomWorkoutBuilderView.swift */; };
 		207FC13C03FFDB49E93824A5 /* TrainingInsights.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5AA7C3F5FA7C75E987103AE /* TrainingInsights.swift */; };
+		21762406BDC941A52D4BD837 /* DemoLunge.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = A5F0D788156EDD1F0B7310CB /* DemoLunge.mp4 */; };
 		26F91D4901210482A20C7C15 /* CoachWalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E628B99E6FA4C08AD970FC0A /* CoachWalletView.swift */; };
 		28AD0E0254312EE77D2C71C9 /* TrainingMotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6003325238091A6E5F144166 /* TrainingMotion.swift */; };
 		28E711A9C3865D85107FD07E /* PlusComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52777BFC47C569EF55CADF6F /* PlusComponents.swift */; };
@@ -27,7 +30,12 @@
 		47E490789829ECD49FFE08EA /* CoachView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 743FA819BBA6E97334CD50AF /* CoachView.swift */; };
 		504ADD8AEDA4D7D8DEAA8092 /* HybridTrainingApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1063EA4F72F50F51AD841F08 /* HybridTrainingApp.swift */; };
 		55F96369B87F93B7972F9F4C /* TodayCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48F415B186D42730826196D3 /* TodayCards.swift */; };
+		62A47F01081E6EEB87705664 /* DemoGoblet.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = B42227FA3211860C29EE57E3 /* DemoGoblet.mp4 */; };
 		672A390EDE147DD7ABAEE78A /* BarlowCondensed-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C352708A5055509C13E76329 /* BarlowCondensed-Bold.ttf */; };
+		6E670674F5E06DCABF754DAE /* DemoSled.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 5694882B547111E87B645406 /* DemoSled.mp4 */; };
+		6EC758360F46C31A6DF597F0 /* DemoSquat.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = D70FB1FEC49D4B1836C9EACE /* DemoSquat.mp4 */; };
+		71E4AC0A93097AB1FA785E91 /* ExerciseClipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD78C6F8E50549D83ABAF0C3 /* ExerciseClipView.swift */; };
+		7A6615CD396275AECD179B11 /* DemoSandbag.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 030E30B20A47F7F23E0F369B /* DemoSandbag.mp4 */; };
 		817C7479EB0402E7F16B7CBA /* WorkoutOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7374D506038A25AF06B98E0 /* WorkoutOutlineView.swift */; };
 		88603B685360E7F3678A22FC /* CoachComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723D45F2B69325E775128CCD /* CoachComponents.swift */; };
 		89981ED961EF706F1B1C651D /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DB46A7378B2F57788B8F45A /* OnboardingView.swift */; };
@@ -35,9 +43,12 @@
 		9CE822195B8E589D295AE6C4 /* CoachSignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60D930602683DA796372531 /* CoachSignInView.swift */; };
 		A0D1A2989EEAF53BD1E65F98 /* CoachAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15338BB4C1D6F43725899F8B /* CoachAPI.swift */; };
 		A3505E6F5D07DB0336AF8735 /* CoachModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EAC1F2FB8D4BA306AF84D76 /* CoachModels.swift */; };
+		A5B7A32E5A4E7587D65514FD /* DemoRun.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = E7D338FFA134C7107DBED12A /* DemoRun.mp4 */; };
 		A8B26545B7D74AA037481CAA /* EditorialSurfaces.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EADCF46673439EDE81AC24B /* EditorialSurfaces.swift */; };
+		ACFBF834AE9A906304446B3F /* DemoRow.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = F0DDD4E0F9032CC62868D91B /* DemoRow.mp4 */; };
 		AD52EE0D045BFCB2DE1B39BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86A8006107665CDC2CFA9BB3 /* LaunchScreen.storyboard */; };
 		B29B092307E61E7AE511FF72 /* CoachAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A193F94C2D1E39341CA160F /* CoachAccount.swift */; };
+		B3FE1D00363EBBD426B11E8C /* DemoWallball.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 563E954046611A0CB33824EC /* DemoWallball.mp4 */; };
 		BA64A0A9638D25F7A6244E31 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4E75024995727D97062892D2 /* PrivacyInfo.xcprivacy */; };
 		BB019971CA185F8DD8FEF546 /* WorkoutSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94C92E787CB96356079D05C /* WorkoutSummaryView.swift */; };
 		CB5586DBB66127DF8BEE2F8F /* PlusPaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE3AC32F002F2EC5D97A2BA /* PlusPaywallView.swift */; };
@@ -51,6 +62,7 @@
 		D9EA0FC4EB02BA11868EDCA1 /* TrainingRewards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3027843E8B442B42A7A27ECC /* TrainingRewards.swift */; };
 		DF9B141083DA9BE26EC08DC9 /* PlusToolsCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6076EFFD8E99D009B7129A27 /* PlusToolsCard.swift */; };
 		E386FCA476AD7A6D536703A6 /* ExerciseDemoContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0881DB4A1D65B0709404028 /* ExerciseDemoContent.swift */; };
+		E3AB6EC422006D6284A6C690 /* DemoCarry.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = AE10C39E3580EDACB484DF86 /* DemoCarry.mp4 */; };
 		E6FD1AA18C35D399E22BDB33 /* RewardsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EEFE3E72356F4760BD3A959 /* RewardsView.swift */; };
 		F213EF64E0C504C7DE4E79A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D49496DB1406583847B9AE06 /* Assets.xcassets */; };
 		F244D77C7102FDDB518C1971 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54F77DE3AC911DF5D0890F5 /* TodayView.swift */; };
@@ -61,6 +73,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		030E30B20A47F7F23E0F369B /* DemoSandbag.mp4 */ = {isa = PBXFileReference; includeInIndex = 1; path = DemoSandbag.mp4; sourceTree = "<group>"; };
 		04BBB32CAE2D341005AF2D3B /* WelcomeHeroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeHeroView.swift; sourceTree = "<group>"; };
 		0758E337664ED64F5BCC6129 /* ResultEditors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultEditors.swift; sourceTree = "<group>"; };
 		1063EA4F72F50F51AD841F08 /* HybridTrainingApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HybridTrainingApp.swift; sourceTree = "<group>"; };
@@ -75,6 +88,8 @@
 		4E75024995727D97062892D2 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		50E6DDE7CD5B74AA936DC352 /* CustomWorkoutBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomWorkoutBuilderView.swift; sourceTree = "<group>"; };
 		52777BFC47C569EF55CADF6F /* PlusComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusComponents.swift; sourceTree = "<group>"; };
+		563E954046611A0CB33824EC /* DemoWallball.mp4 */ = {isa = PBXFileReference; includeInIndex = 1; path = DemoWallball.mp4; sourceTree = "<group>"; };
+		5694882B547111E87B645406 /* DemoSled.mp4 */ = {isa = PBXFileReference; includeInIndex = 1; path = DemoSled.mp4; sourceTree = "<group>"; };
 		5EEFE3E72356F4760BD3A959 /* RewardsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardsView.swift; sourceTree = "<group>"; };
 		6003325238091A6E5F144166 /* TrainingMotion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingMotion.swift; sourceTree = "<group>"; };
 		6076EFFD8E99D009B7129A27 /* PlusToolsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusToolsCard.swift; sourceTree = "<group>"; };
@@ -93,25 +108,34 @@
 		94BC53AC365D61EFD3FCDB98 /* CoachAccountViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachAccountViews.swift; sourceTree = "<group>"; };
 		9A193F94C2D1E39341CA160F /* CoachAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachAccount.swift; sourceTree = "<group>"; };
 		9EADCF46673439EDE81AC24B /* EditorialSurfaces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorialSurfaces.swift; sourceTree = "<group>"; };
+		A5F0D788156EDD1F0B7310CB /* DemoLunge.mp4 */ = {isa = PBXFileReference; includeInIndex = 1; path = DemoLunge.mp4; sourceTree = "<group>"; };
 		ACF010088854B138BCFF91B1 /* WorkoutStepEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStepEditorView.swift; sourceTree = "<group>"; };
+		AE10C39E3580EDACB484DF86 /* DemoCarry.mp4 */ = {isa = PBXFileReference; includeInIndex = 1; path = DemoCarry.mp4; sourceTree = "<group>"; };
 		B02AEB1A3AF81A3B5499443A /* PlusPurchaseStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusPurchaseStore.swift; sourceTree = "<group>"; };
 		B0E9DF1A83855778A236CD4C /* TrainingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingModels.swift; sourceTree = "<group>"; };
 		B261D2E0EFD06604F8E98734 /* ExerciseCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCatalog.swift; sourceTree = "<group>"; };
+		B42227FA3211860C29EE57E3 /* DemoGoblet.mp4 */ = {isa = PBXFileReference; includeInIndex = 1; path = DemoGoblet.mp4; sourceTree = "<group>"; };
 		B54F77DE3AC911DF5D0890F5 /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		BE6ABEF8D23051E5BBAC98F4 /* TrainingPreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingPreferencesView.swift; sourceTree = "<group>"; };
 		C2CD72F7753F63EC3688B65B /* ExercisePoseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisePoseView.swift; sourceTree = "<group>"; };
 		C324A16CE8AF92BDB11743EE /* WorkoutSessionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionEngine.swift; sourceTree = "<group>"; };
 		C352708A5055509C13E76329 /* BarlowCondensed-Bold.ttf */ = {isa = PBXFileReference; includeInIndex = 1; path = "BarlowCondensed-Bold.ttf"; sourceTree = "<group>"; };
+		C454B778DFAE32E9D62C7EF1 /* DemoMarch.mp4 */ = {isa = PBXFileReference; includeInIndex = 1; path = DemoMarch.mp4; sourceTree = "<group>"; };
 		C94C92E787CB96356079D05C /* WorkoutSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSummaryView.swift; sourceTree = "<group>"; };
 		D0881DB4A1D65B0709404028 /* ExerciseDemoContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDemoContent.swift; sourceTree = "<group>"; };
 		D49496DB1406583847B9AE06 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D5AA7C3F5FA7C75E987103AE /* TrainingInsights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingInsights.swift; sourceTree = "<group>"; };
+		D70FB1FEC49D4B1836C9EACE /* DemoSquat.mp4 */ = {isa = PBXFileReference; includeInIndex = 1; path = DemoSquat.mp4; sourceTree = "<group>"; };
+		DD78C6F8E50549D83ABAF0C3 /* ExerciseClipView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ExerciseClipView.swift; sourceTree = "<group>"; };
 		E60D930602683DA796372531 /* CoachSignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachSignInView.swift; sourceTree = "<group>"; };
 		E628B99E6FA4C08AD970FC0A /* CoachWalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachWalletView.swift; sourceTree = "<group>"; };
 		E7374D506038A25AF06B98E0 /* WorkoutOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutOutlineView.swift; sourceTree = "<group>"; };
+		E7D338FFA134C7107DBED12A /* DemoRun.mp4 */ = {isa = PBXFileReference; includeInIndex = 1; path = DemoRun.mp4; sourceTree = "<group>"; };
 		ECCCFBC1EABD8A69115A5CA3 /* WorkoutChooserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutChooserView.swift; sourceTree = "<group>"; };
 		EEC0BB9F88DB6EA141D8B270 /* JourneySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JourneySettingsView.swift; sourceTree = "<group>"; };
 		EF5CE7BED21D40ABEC428FDA /* HyroxAllInOneCoach.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = HyroxAllInOneCoach.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0DDD4E0F9032CC62868D91B /* DemoRow.mp4 */ = {isa = PBXFileReference; includeInIndex = 1; path = DemoRow.mp4; sourceTree = "<group>"; };
+		F571D5B3DC4C5C5B559D153F /* DemoSki.mp4 */ = {isa = PBXFileReference; includeInIndex = 1; path = DemoSki.mp4; sourceTree = "<group>"; };
 		FEAE937A61318AE759E96E56 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -185,6 +209,25 @@
 			path = Features;
 			sourceTree = "<group>";
 		};
+		3A2C0AC75FAF0EA434AA4A39 /* Clips */ = {
+			isa = PBXGroup;
+			children = (
+				AE10C39E3580EDACB484DF86 /* DemoCarry.mp4 */,
+				B42227FA3211860C29EE57E3 /* DemoGoblet.mp4 */,
+				A5F0D788156EDD1F0B7310CB /* DemoLunge.mp4 */,
+				C454B778DFAE32E9D62C7EF1 /* DemoMarch.mp4 */,
+				F0DDD4E0F9032CC62868D91B /* DemoRow.mp4 */,
+				E7D338FFA134C7107DBED12A /* DemoRun.mp4 */,
+				030E30B20A47F7F23E0F369B /* DemoSandbag.mp4 */,
+				F571D5B3DC4C5C5B559D153F /* DemoSki.mp4 */,
+				5694882B547111E87B645406 /* DemoSled.mp4 */,
+				D70FB1FEC49D4B1836C9EACE /* DemoSquat.mp4 */,
+				563E954046611A0CB33824EC /* DemoWallball.mp4 */,
+			);
+			name = Clips;
+			path = Clips;
+			sourceTree = "<group>";
+		};
 		429124C762C06457782B8A09 /* Plus */ = {
 			isa = PBXGroup;
 			children = (
@@ -241,6 +284,7 @@
 				7F1C14AC02C3A36A4AE4D0C8 /* ExerciseDemoPlayer.swift */,
 				384FEEED0AC65A90C4A17867 /* ExerciseGuideViews.swift */,
 				C2CD72F7753F63EC3688B65B /* ExercisePoseView.swift */,
+				DD78C6F8E50549D83ABAF0C3 /* ExerciseClipView.swift */,
 			);
 			path = ExerciseGuides;
 			sourceTree = "<group>";
@@ -303,6 +347,7 @@
 				022389A0671671F2E49854A7 /* Services */,
 				5F10C9C0E187A16B65482B2C /* Fonts */,
 				4E75024995727D97062892D2 /* PrivacyInfo.xcprivacy */,
+				3A2C0AC75FAF0EA434AA4A39 /* Clips */,
 			);
 			path = HyroxAllInOneCoach;
 			sourceTree = "<group>";
@@ -373,6 +418,17 @@
 				672A390EDE147DD7ABAEE78A /* BarlowCondensed-Bold.ttf in Resources */,
 				2F62352B544FB7E9390C9B1A /* BarlowCondensed-SemiBold.ttf in Resources */,
 				BA64A0A9638D25F7A6244E31 /* PrivacyInfo.xcprivacy in Resources */,
+				E3AB6EC422006D6284A6C690 /* DemoCarry.mp4 in Resources */,
+				62A47F01081E6EEB87705664 /* DemoGoblet.mp4 in Resources */,
+				21762406BDC941A52D4BD837 /* DemoLunge.mp4 in Resources */,
+				0BB6AB3445E3E5B1A38DE850 /* DemoMarch.mp4 in Resources */,
+				ACFBF834AE9A906304446B3F /* DemoRow.mp4 in Resources */,
+				A5B7A32E5A4E7587D65514FD /* DemoRun.mp4 in Resources */,
+				7A6615CD396275AECD179B11 /* DemoSandbag.mp4 in Resources */,
+				18D39E8954928E0C7BB919C7 /* DemoSki.mp4 in Resources */,
+				6E670674F5E06DCABF754DAE /* DemoSled.mp4 in Resources */,
+				6EC758360F46C31A6DF597F0 /* DemoSquat.mp4 in Resources */,
+				B3FE1D00363EBBD426B11E8C /* DemoWallball.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -428,6 +484,7 @@
 				31F02D88E15BAD7BA5DBF715 /* WorkoutStepEditorView.swift in Sources */,
 				BB019971CA185F8DD8FEF546 /* WorkoutSummaryView.swift in Sources */,
 				11ABFDA29B4474AB52DBF9C3 /* TrainingPlanView.swift in Sources */,
+				71E4AC0A93097AB1FA785E91 /* ExerciseClipView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,7 +507,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_NAME = HyroxAllInOneCoach;
 				SDKROOT = iphoneos;
@@ -464,7 +521,7 @@
 		1C61CDC602245B6E31B7E6F2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				INFOPLIST_FILE = HyroxAllInOneCoach/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superapp.hyroxallinonecoachyzr40;
@@ -474,7 +531,7 @@
 		839F72EC154068CBC99A3164 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				INFOPLIST_FILE = HyroxAllInOneCoach/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superapp.hyroxallinonecoachyzr40;
@@ -486,7 +543,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 20;
+				CURRENT_PROJECT_VERSION = 21;
 				ENABLE_NS_ASSERTIONS = NO;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_NAME = HyroxAllInOneCoach;

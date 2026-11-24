@@ -14,6 +14,7 @@ struct ExerciseDemoPlayer: View {
     @State private var visible = false
 
     private var demo: MovementDemo { exercise.demo }
+    private var clipURL: URL? { Bundle.main.url(forResource: demo.asset, withExtension: "mp4") }
     private var looping: Bool {
         visible && playing && autoplay && !reduceMotion && !demo.still && scenePhase == .active
     }
@@ -31,7 +32,7 @@ struct ExerciseDemoPlayer: View {
             VStack(alignment: .leading, spacing: 12) {
                 guidance
                 controls
-                Text(reduceMotion ? "Reduce Motion is on · use the arrows to explore the positions." : "AI illustrations · soft transitions, not motion footage")
+                Text(reduceMotion ? "Reduce Motion is on · use the arrows to explore the positions." : "AI-generated movement guide · 3 seconds per position")
                     .font(.caption).foregroundStyle(TrainingTheme.secondary)
             }.padding(16)
         }
@@ -49,8 +50,15 @@ struct ExerciseDemoPlayer: View {
     }
 
     private var stage: some View {
-        TimelineView(.animation(minimumInterval: 1.0 / 30.0, paused: !looping)) { context in
-            ExerciseLoopView(asset: demo.asset, frames: demo.frames, position: position(at: context.date))
+        Group {
+            if let clip = clipURL, looping {
+                ExerciseClipView(url: clip, active: true, rate: slow ? 0.55 : 1)
+                    .aspectRatio(1, contentMode: .fit)
+            } else {
+                TimelineView(.animation(minimumInterval: 1.0 / 30.0, paused: !looping)) { context in
+                    ExerciseLoopView(asset: demo.asset, frames: demo.frames, position: position(at: context.date))
+                }
+            }
         }
         .overlay(alignment: .topLeading) {
             Text(status)
