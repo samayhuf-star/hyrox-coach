@@ -1,0 +1,32 @@
+{
+  "cli": {
+    "version": ">= 16.0.0",
+    "appVersionSource": "local"
+  },
+  "build": {
+    "production": {
+      "distribution": "store",
+      "ios": {
+        "image": "latest",
+        "scheme": "HyroxAllInOneCoach",
+        "buildConfiguration": "Release"
+      }
+    },
+    "simulator": {
+      "distribution": "internal",
+      "ios": {
+        "simulator": true,
+        "image": "latest",
+        "scheme": "HyroxAllInOneCoach",
+        "buildConfiguration": "Release"
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "ios": {
+        "ascAppId": "6837461149"
+      }
+    }
+  }
+}

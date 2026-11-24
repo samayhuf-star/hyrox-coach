@@ -1,0 +1,5 @@
+# No CocoaPods dependencies. Present because Expo's build service runs `pod install`.
+platform :ios, '17.0'
+
+target 'HyroxAllInOneCoach' do
+end
