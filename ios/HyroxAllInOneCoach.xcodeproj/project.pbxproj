@@ -50,6 +50,7 @@
 		B29B092307E61E7AE511FF72 /* CoachAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A193F94C2D1E39341CA160F /* CoachAccount.swift */; };
 		B3FE1D00363EBBD426B11E8C /* DemoWallball.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 563E954046611A0CB33824EC /* DemoWallball.mp4 */; };
 		BA64A0A9638D25F7A6244E31 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4E75024995727D97062892D2 /* PrivacyInfo.xcprivacy */; };
+		BABAED15EDD956CD311E1FC2 /* DemoWalk.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 85420C64EF9CE1A6A623541E /* DemoWalk.mp4 */; };
 		BB019971CA185F8DD8FEF546 /* WorkoutSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94C92E787CB96356079D05C /* WorkoutSummaryView.swift */; };
 		CB5586DBB66127DF8BEE2F8F /* PlusPaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BE3AC32F002F2EC5D97A2BA /* PlusPaywallView.swift */; };
 		CCB31C513CB213AE64E432A9 /* ExerciseGuideViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 384FEEED0AC65A90C4A17867 /* ExerciseGuideViews.swift */; };
@@ -103,6 +104,7 @@
 		7F1C14AC02C3A36A4AE4D0C8 /* ExerciseDemoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDemoPlayer.swift; sourceTree = "<group>"; };
 		837A8CC20A695722349EE405 /* TrainingPlanView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TrainingPlanView.swift; sourceTree = "<group>"; };
 		8435003ACCC3DDBAEF717C6A /* ProgressInsightsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressInsightsView.swift; sourceTree = "<group>"; };
+		85420C64EF9CE1A6A623541E /* DemoWalk.mp4 */ = {isa = PBXFileReference; includeInIndex = 1; path = DemoWalk.mp4; sourceTree = "<group>"; };
 		8BE3AC32F002F2EC5D97A2BA /* PlusPaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusPaywallView.swift; sourceTree = "<group>"; };
 		8D8AB0E4CA1EFD8E1E53428D /* WorkoutPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutPlayerView.swift; sourceTree = "<group>"; };
 		94BC53AC365D61EFD3FCDB98 /* CoachAccountViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachAccountViews.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 				5694882B547111E87B645406 /* DemoSled.mp4 */,
 				D70FB1FEC49D4B1836C9EACE /* DemoSquat.mp4 */,
 				563E954046611A0CB33824EC /* DemoWallball.mp4 */,
+				85420C64EF9CE1A6A623541E /* DemoWalk.mp4 */,
 			);
 			name = Clips;
 			path = Clips;
@@ -429,6 +432,7 @@
 				6E670674F5E06DCABF754DAE /* DemoSled.mp4 in Resources */,
 				6EC758360F46C31A6DF597F0 /* DemoSquat.mp4 in Resources */,
 				B3FE1D00363EBBD426B11E8C /* DemoWallball.mp4 in Resources */,
+				BABAED15EDD956CD311E1FC2 /* DemoWalk.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,7 +511,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_NAME = HyroxAllInOneCoach;
 				SDKROOT = iphoneos;
@@ -521,7 +525,7 @@
 		1C61CDC602245B6E31B7E6F2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				INFOPLIST_FILE = HyroxAllInOneCoach/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superapp.hyroxallinonecoachyzr40;
@@ -531,7 +535,7 @@
 		839F72EC154068CBC99A3164 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				INFOPLIST_FILE = HyroxAllInOneCoach/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superapp.hyroxallinonecoachyzr40;
@@ -543,7 +547,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 21;
+				CURRENT_PROJECT_VERSION = 22;
 				ENABLE_NS_ASSERTIONS = NO;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_NAME = HyroxAllInOneCoach;
