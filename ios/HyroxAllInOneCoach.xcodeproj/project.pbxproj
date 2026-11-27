@@ -10,6 +10,8 @@
 		0112592A74BEAC7C98109C3D /* WorkoutPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D8AB0E4CA1EFD8E1E53428D /* WorkoutPlayerView.swift */; };
 		035E494F3D24DD1B63835BAF /* TrainingPreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE6ABEF8D23051E5BBAC98F4 /* TrainingPreferencesView.swift */; };
 		0B3822BB5395A69398F9DBB1 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 2897E3A023C6405DE8382635 /* RevenueCat */; };
+		A1B2C3D4E5F6A7B8C9D0E101 /* OneSignalFramework in Frameworks */ = {isa = PBXBuildFile; productRef = A1B2C3D4E5F6A7B8C9D0E102 /* OneSignalFramework */; };
+		A1B2C3D4E5F6A7B8C9D0E103 /* PushService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6A7B8C9D0E104 /* PushService.swift */; };
 		0BB6AB3445E3E5B1A38DE850 /* DemoMarch.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = C454B778DFAE32E9D62C7EF1 /* DemoMarch.mp4 */; };
 		0C11935EE89866F7377D062A /* JourneySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEC0BB9F88DB6EA141D8B270 /* JourneySettingsView.swift */; };
 		11ABFDA29B4474AB52DBF9C3 /* TrainingPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837A8CC20A695722349EE405 /* TrainingPlanView.swift */; };
@@ -114,6 +116,7 @@
 		ACF010088854B138BCFF91B1 /* WorkoutStepEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutStepEditorView.swift; sourceTree = "<group>"; };
 		AE10C39E3580EDACB484DF86 /* DemoCarry.mp4 */ = {isa = PBXFileReference; includeInIndex = 1; path = DemoCarry.mp4; sourceTree = "<group>"; };
 		B02AEB1A3AF81A3B5499443A /* PlusPurchaseStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusPurchaseStore.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F6A7B8C9D0E104 /* PushService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushService.swift; sourceTree = "<group>"; };
 		B0E9DF1A83855778A236CD4C /* TrainingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingModels.swift; sourceTree = "<group>"; };
 		B261D2E0EFD06604F8E98734 /* ExerciseCatalog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseCatalog.swift; sourceTree = "<group>"; };
 		B42227FA3211860C29EE57E3 /* DemoGoblet.mp4 */ = {isa = PBXFileReference; includeInIndex = 1; path = DemoGoblet.mp4; sourceTree = "<group>"; };
@@ -147,6 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0B3822BB5395A69398F9DBB1 /* RevenueCat in Frameworks */,
+				A1B2C3D4E5F6A7B8C9D0E101 /* OneSignalFramework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,6 +173,7 @@
 				15338BB4C1D6F43725899F8B /* CoachAPI.swift */,
 				763BC41B74960F5CB098747A /* CoachStore.swift */,
 				B02AEB1A3AF81A3B5499443A /* PlusPurchaseStore.swift */,
+				A1B2C3D4E5F6A7B8C9D0E104 /* PushService.swift */,
 				1D48FEE5A9F34E75556C33E6 /* TrainingRepository.swift */,
 				C324A16CE8AF92BDB11743EE /* WorkoutSessionEngine.swift */,
 			);
@@ -373,6 +378,7 @@
 			name = HyroxAllInOneCoach;
 			packageProductDependencies = (
 				2897E3A023C6405DE8382635 /* RevenueCat */,
+				A1B2C3D4E5F6A7B8C9D0E102 /* OneSignalFramework */,
 			);
 			productName = HyroxAllInOneCoach;
 			productReference = EF5CE7BED21D40ABEC428FDA /* HyroxAllInOneCoach.app */;
@@ -400,6 +406,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				3095288577E8CF54F9CD9D56 /* XCRemoteSwiftPackageReference "purchases-ios" */,
+				A1B2C3D4E5F6A7B8C9D0E105 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 51703F0D9121FF9AE802EE94 /* Products */;
@@ -466,6 +473,7 @@
 				28E711A9C3865D85107FD07E /* PlusComponents.swift in Sources */,
 				CB5586DBB66127DF8BEE2F8F /* PlusPaywallView.swift in Sources */,
 				FF232E0BE57071C45F11076A /* PlusPurchaseStore.swift in Sources */,
+				A1B2C3D4E5F6A7B8C9D0E103 /* PushService.swift in Sources */,
 				DF9B141083DA9BE26EC08DC9 /* PlusToolsCard.swift in Sources */,
 				CD03C0A521EB7370CCB61468 /* ProgressInsightsView.swift in Sources */,
 				F90A595804E509F3A27F6921 /* ResultEditors.swift in Sources */,
@@ -511,7 +519,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_NAME = HyroxAllInOneCoach;
 				SDKROOT = iphoneos;
@@ -525,8 +533,9 @@
 		1C61CDC602245B6E31B7E6F2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				INFOPLIST_FILE = HyroxAllInOneCoach/Info.plist;
+				CODE_SIGN_ENTITLEMENTS = HyroxAllInOneCoach/HyroxAllInOneCoach.entitlements;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superapp.hyroxallinonecoachyzr40;
 			};
@@ -535,8 +544,9 @@
 		839F72EC154068CBC99A3164 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				INFOPLIST_FILE = HyroxAllInOneCoach/Info.plist;
+				CODE_SIGN_ENTITLEMENTS = HyroxAllInOneCoach/HyroxAllInOneCoach.entitlements;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.superapp.hyroxallinonecoachyzr40;
 			};
@@ -547,7 +557,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 23;
 				ENABLE_NS_ASSERTIONS = NO;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_NAME = HyroxAllInOneCoach;
@@ -585,6 +595,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A1B2C3D4E5F6A7B8C9D0E105 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/OneSignal/OneSignal-XCFramework.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.0;
+			};
+		};
 		3095288577E8CF54F9CD9D56 /* XCRemoteSwiftPackageReference "purchases-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/RevenueCat/purchases-ios.git";
@@ -596,6 +614,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A1B2C3D4E5F6A7B8C9D0E102 /* OneSignalFramework */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A1B2C3D4E5F6A7B8C9D0E105 /* XCRemoteSwiftPackageReference "OneSignal-XCFramework" */;
+			productName = OneSignalFramework;
+		};
 		2897E3A023C6405DE8382635 /* RevenueCat */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 3095288577E8CF54F9CD9D56 /* XCRemoteSwiftPackageReference "purchases-ios" */;

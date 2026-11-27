@@ -11,6 +11,7 @@ struct HybridTrainingApp: App {
         let repository = TrainingRepository()
         _repository = State(initialValue: repository)
         _engine = State(initialValue: WorkoutSessionEngine(repository: repository))
+        PushService.startIfConsented()
     }
     var body: some Scene {
         WindowGroup {

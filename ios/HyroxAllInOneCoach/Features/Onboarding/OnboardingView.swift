@@ -1,5 +1,8 @@
 import SwiftUI
 
+/// Number of onboarding screens (read by the autopilot panel).
+let ONBOARDING_SCREENS = 10
+
 struct OnboardingView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
@@ -11,6 +14,8 @@ struct OnboardingView: View {
     @State private var preferences: AthletePreferences
     @State private var journey: TrainingJourney
     @State private var rebuildStarters: Bool
+    @State private var pushAnswer: Bool? = nil
+    private var lastPage: Int { ONBOARDING_SCREENS - 1 }
 
     init(repository: TrainingRepository, isReview: Bool = false) {
         self.repository = repository
@@ -60,11 +65,11 @@ struct OnboardingView: View {
                     .frame(width: 44, height: 44).accessibilityHidden(true)
             }
             HStack(spacing: 5) {
-                ForEach(0..<5, id: \.self) { step in
+                ForEach(0..<ONBOARDING_SCREENS, id: \.self) { step in
                     Capsule().fill(step <= page ? TrainingTheme.primary : TrainingTheme.border).frame(height: 4)
                 }
             }
-            .accessibilityElement(children: .ignore).accessibilityLabel("Setup step \(page + 1) of 5")
+            .accessibilityElement(children: .ignore).accessibilityLabel("Setup step \(page + 1) of \(ONBOARDING_SCREENS)")
             if isReview {
                 Button("Cancel") { dismiss() }.frame(minHeight: 44)
             } else {
@@ -77,9 +82,14 @@ struct OnboardingView: View {
     @ViewBuilder private var pageContent: some View {
         switch page {
         case 0: welcome
-        case 1: levelChoices
-        case 2: rhythmChoices
-        case 3: equipmentChoices
+        case 1: whatYouGet
+        case 2: levelChoices
+        case 3: goalChoices
+        case 4: rhythmChoices
+        case 5: equipmentChoices
+        case 6: unitChoices
+        case 7: coachIntro
+        case 8: reminders
         default: ready
         }
     }
@@ -105,12 +115,6 @@ struct OnboardingView: View {
     private var rhythmChoices: some View {
         VStack(alignment: .leading, spacing: 22) {
             heading("Find your rhythm.", detail: "Make space for movement and recovery. These choices are a starting point, not a prescription.")
-            SectionHeading(title: "What brings you here?")
-            ForEach(TrainingGoal.allCases) { goal in
-                ChoiceRow(title: goal.title, detail: goal.detail, selected: journey.goal == goal) {
-                    withAnimation(selectionAnimation) { journey.goal = goal }
-                }
-            }
             VStack(alignment: .leading, spacing: 16) {
                 SectionHeading(title: "Time for a session")
                 Picker("Time for a session", selection: $preferences.timeBudget) {
@@ -126,6 +130,61 @@ struct OnboardingView: View {
             }.trainingPanel()
         }
     }
+    private var goalChoices: some View {
+        VStack(alignment: .leading, spacing: 22) {
+            JourneyEmblem(symbol: "flag.checkered", progress: 0.5, compact: true)
+            heading("What brings you here?", detail: "Your goal shapes the mix of running, strength and station work in your plan.")
+            ForEach(TrainingGoal.allCases) { goal in
+                ChoiceRow(title: goal.title, detail: goal.detail, selected: journey.goal == goal) {
+                    withAnimation(selectionAnimation) { journey.goal = goal }
+                }
+            }
+        }
+    }
+    private var whatYouGet: some View {
+        VStack(alignment: .leading, spacing: 22) {
+            heading("Train like a hybrid athlete.", detail: "Running and functional strength in one plan, built around your week.")
+            benefit("A six-week plan", detail: "Run, strength and station sessions that build week by week.", symbol: "calendar")
+            benefit("A guided workout player", detail: "Clear steps, a race-style clock and what's coming next.", symbol: "timer")
+            benefit("Exercise demos", detail: "Short looping clips for every station and lift.", symbol: "play.rectangle")
+            benefit("Progress you can see", detail: "XP, badges and saved sessions. Rest days never cost you points.", symbol: "chart.line.uptrend.xyaxis")
+        }
+    }
+    private var unitChoices: some View {
+        VStack(alignment: .leading, spacing: 22) {
+            JourneyEmblem(symbol: "ruler", progress: 0.7, compact: true)
+            heading("Pick your measurements.", detail: "Distances and loads in your workouts use this. You can switch anytime.")
+            ForEach(UnitSystem.allCases) { unit in
+                ChoiceRow(title: unit.title, selected: preferences.units == unit) {
+                    withAnimation(selectionAnimation) { preferences.units = unit }
+                }
+            }
+        }
+    }
+    private var coachIntro: some View {
+        VStack(alignment: .leading, spacing: 22) {
+            JourneyEmblem(symbol: "bubble.left.and.text.bubble.right", progress: 0.8, compact: true)
+            heading("Meet your AI coach.", detail: "Ask about pacing, station technique or how to adjust a session when you're short on time.")
+            benefit("Answers about your plan", detail: "The coach knows your level, goal and equipment.", symbol: "person.fill.questionmark")
+            benefit("Race-day tips", detail: "Transitions, pacing splits and what to practise.", symbol: "flag.checkered")
+            Text("The coach gives general training guidance, not medical advice.")
+                .font(.subheadline).foregroundStyle(TrainingTheme.secondary)
+        }
+    }
+    private var reminders: some View {
+        VStack(alignment: .leading, spacing: 22) {
+            JourneyEmblem(symbol: "bell.badge", progress: 0.9, compact: true)
+            heading("Want a nudge on training days?", detail: "We can remind you about planned sessions and new plan weeks. No spam, and you can turn it off in Settings.")
+            ChoiceRow(title: "Yes, remind me", detail: "You'll see Apple's permission prompt next.", selected: pushAnswer == true) {
+                pushAnswer = true
+                Task { _ = await PushService.optIn() }
+            }
+            ChoiceRow(title: "Not now", selected: pushAnswer == false) {
+                pushAnswer = false
+                PushService.optOut()
+            }
+        }
+    }
     private var equipmentChoices: some View {
         VStack(alignment: .leading, spacing: 20) {
             heading("Use what you have.", detail: "Pick the equipment you can access. No equipment? Leave everything unselected for bodyweight alternatives.")
@@ -137,12 +196,6 @@ struct OnboardingView: View {
                     }
                 }
             }
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Measurements").font(.headline)
-                Picker("Measurements", selection: $preferences.units) {
-                    ForEach(UnitSystem.allCases) { Text($0.title).tag($0) }
-                }.pickerStyle(.segmented)
-            }.trainingPanel()
         }
     }
     private var ready: some View {
@@ -174,14 +227,14 @@ struct OnboardingView: View {
     private var bottomBar: some View {
         VStack(spacing: 9) {
             Button {
-                if page < 4 { move(to: page + 1) }
+                if page < lastPage { move(to: page + 1) }
                 else { finish(useCurrentSetup: false) }
             } label: {
-                Label(page == 4 ? "Let’s train" : (page == 0 ? "Build my plan" : "Continue"),
-                      systemImage: page == 4 ? "checkmark" : "arrow.right")
+                Label(page == lastPage ? "Let’s train" : (page == 0 ? "Build my plan" : "Continue"),
+                      systemImage: page == lastPage ? "checkmark" : "arrow.right")
             }
             .buttonStyle(TrainingButtonStyle())
-            Text(page == 4 ? "You can change these choices anytime." : "About a minute to make this your own.")
+            Text(page == lastPage ? "You can change these choices anytime." : "About a minute to make this your own.")
                 .font(.caption).foregroundStyle(TrainingTheme.secondary)
         }
         .padding(.horizontal, 20).padding(.top, 12).padding(.bottom, 8)
@@ -189,7 +242,7 @@ struct OnboardingView: View {
     }
     private func heading(_ title: String, detail: String) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            Eyebrow(text: page == 0 ? "Welcome to Hybrid Trainer" : "Make it yours · \(page + 1) / 5", color: TrainingTheme.mint)
+            Eyebrow(text: page == 0 ? "Welcome to Hybrid Trainer" : "Make it yours · \(page + 1) / \(ONBOARDING_SCREENS)", color: TrainingTheme.mint)
             Text(title).font(.trainingDisplay()).textCase(.uppercase).fixedSize(horizontal: false, vertical: true)
                 .accessibilityAddTraits(.isHeader).accessibilityFocused($headingFocused)
             Text(detail).font(.body).foregroundStyle(TrainingTheme.secondary)

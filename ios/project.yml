@@ -24,6 +24,9 @@ packages:
   RevenueCat:
     url: https://github.com/RevenueCat/purchases-ios.git
     from: 5.43.0
+  OneSignal:
+    url: https://github.com/OneSignal/OneSignal-XCFramework.git
+    from: 5.2.0
 
 targets:
   HyroxAllInOneCoach:
@@ -33,9 +36,12 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.superapp.hyroxallinonecoachyzr40
+        CODE_SIGN_ENTITLEMENTS: HyroxAllInOneCoach/HyroxAllInOneCoach.entitlements
     dependencies:
       - package: RevenueCat
         product: RevenueCat
+      - package: OneSignal
+        product: OneSignalFramework
     sources:
       - path: HyroxAllInOneCoach
     info:
@@ -55,6 +61,8 @@ targets:
           - CFBundleURLName: Coach sign-in
             CFBundleURLSchemes: [hybridcoach]
         ITSAppUsesNonExemptEncryption: false
+        OneSignalAppID: ''
+        UIBackgroundModes: [remote-notification]
         UIAppFonts: [BarlowCondensed-Bold.ttf, BarlowCondensed-SemiBold.ttf]
         UIUserInterfaceStyle: Dark
         LSRequiresIPhoneOS: true
