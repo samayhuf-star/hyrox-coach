@@ -1,0 +1,1 @@
+plan,functional,wallballs,sled,rowing,skierg,burpee,lunges,station,gym,interval,hiit,running,coach
